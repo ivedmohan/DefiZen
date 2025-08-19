@@ -1,0 +1,269 @@
+.AgentWalletManager {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+
+  .manager-container {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    h2 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(45deg, #00d4ff, #ff6b6b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .error-message {
+      background: rgba(255, 59, 48, 0.1);
+      border: 1px solid #ff3b30;
+      color: #ff6b6b;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .success-message {
+      background: rgba(52, 199, 89, 0.1);
+      border: 1px solid #34c759;
+      color: #4ade80;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .form-section {
+      .input-group {
+        margin-bottom: 1.5rem;
+
+        label {
+          display: block;
+          color: #fff;
+          margin-bottom: 0.5rem;
+          font-weight: 600;
+          font-size: 0.9rem;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+          width: 100%;
+          padding: 1rem;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.05);
+          color: #fff;
+          font-size: 1rem;
+          transition: all 0.3s ease;
+
+          &:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+          }
+
+          &::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+          }
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+        }
+      }
+
+      .agent-type-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        .type-btn {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 15px;
+          padding: 1.5rem;
+          color: #fff;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+          }
+
+          &.active {
+            background: linear-gradient(135deg, #00d4ff, #ff6b6b);
+            border-color: transparent;
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+          }
+
+          small {
+            display: block;
+            margin-top: 0.5rem;
+            opacity: 0.7;
+            font-size: 0.8rem;
+          }
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+        }
+      }
+
+      .portfolio-preset-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        .preset-btn {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 12px;
+          padding: 1rem;
+          color: #fff;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          text-align: center;
+          font-size: 0.9rem;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+          }
+
+          &.active {
+            background: linear-gradient(135deg, #4ade80, #34c759);
+            border-color: transparent;
+            box-shadow: 0 8px 16px rgba(74, 222, 128, 0.3);
+          }
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+        }
+      }
+
+      .limits-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .permissions-summary {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+
+        h3 {
+          color: #fff;
+          margin-bottom: 1rem;
+          font-size: 1.2rem;
+          font-weight: 600;
+        }
+
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          li {
+            color: #fff;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+
+            &:last-child {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+
+      .create-agent-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #00d4ff, #ff6b6b);
+        border: none;
+        border-radius: 15px;
+        padding: 1.5rem;
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        &:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 15px 30px rgba(0, 212, 255, 0.4);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+      }
+
+      .wallet-warning {
+        background: rgba(255, 193, 7, 0.1);
+        border: 1px solid #ffc107;
+        color: #ffd54f;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-top: 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .AgentWalletManager {
+    padding: 1rem;
+
+    .manager-container {
+      padding: 1.5rem;
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .form-section {
+        .agent-type-buttons {
+          grid-template-columns: 1fr;
+        }
+
+        .portfolio-preset-buttons {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+  }
+} 
