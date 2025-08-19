@@ -38,11 +38,93 @@ export const mockPrisma = {
   userContact: {
     findMany: async (params: any) => {
       console.log("Mock: userContact.findMany called with:", params);
-      return [];
+      // Return mock contacts
+      return [
+        {
+          id: 1,
+          userWallet: "0x13b8eeaed90d4e6f902dde1bf1770cd75508d00594bbae2bdd6f1554b0dcf61",
+          contactWallet: "0x051DaD7Db80fE3FCDa3f7E41E40A6f3bABe20F1Bb3BcFd9C5a12F0E89f8C9b1D",
+          contactName: "Alice DeFi",
+          contactType: "friend",
+          isActive: true,
+          createdAt: new Date("2025-08-15T10:30:00Z"),
+          lastInteraction: new Date("2025-08-19T16:45:00Z"),
+          tags: ["defi", "trading", "yield-farming"],
+          notes: "Active DeFi trader, loves yield farming"
+        },
+        {
+          id: 2,
+          userWallet: "0x13b8eeaed90d4e6f902dde1bf1770cd75508d00594bbae2bdd6f1554b0dcf61",
+          contactWallet: "0x052EaE8FDb81fE4FDBa4f7F42E50B7F2Ce3C9c2F4BdE30F2Aa23G1F90g9D0c2E",
+          contactName: "Bob Trader",
+          contactType: "business",
+          isActive: true,
+          createdAt: new Date("2025-08-10T14:20:00Z"),
+          lastInteraction: new Date("2025-08-18T12:15:00Z"),
+          tags: ["business", "starknet", "nft"],
+          notes: "Professional trader on StarkNet"
+        },
+        {
+          id: 3,
+          userWallet: "0x13b8eeaed90d4e6f902dde1bf1770cd75508d00594bbae2bdd6f1554b0dcf61",
+          contactWallet: "0x053FbF9GEc92gF5GECb5g8G43F60C8G3Ce4D0d3G5CeF40G3Bb34H2G01h0E1d3F",
+          contactName: "Carol Yield",
+          contactType: "friend",
+          isActive: true,
+          createdAt: new Date("2025-08-08T09:45:00Z"),
+          lastInteraction: new Date("2025-08-17T20:30:00Z"),
+          tags: ["yield", "farming", "protocols"],
+          notes: "Expert in yield farming strategies"
+        }
+      ];
     },
     create: async (params: any) => {
       console.log("Mock: userContact.create called with:", params);
-      return { id: 1, ...params.data };
+      const newContact = {
+        id: Math.floor(Math.random() * 1000) + 4,
+        userWallet: params.data.userWallet,
+        contactWallet: params.data.contactWallet,
+        contactName: params.data.contactName,
+        contactType: params.data.contactType || "friend",
+        isActive: true,
+        createdAt: new Date(),
+        lastInteraction: new Date(),
+        tags: params.data.tags || [],
+        notes: params.data.notes || ""
+      };
+      return newContact;
+    },
+    update: async (params: any) => {
+      console.log("Mock: userContact.update called with:", params);
+      return {
+        id: params.where.id,
+        ...params.data,
+        updatedAt: new Date()
+      };
+    },
+    delete: async (params: any) => {
+      console.log("Mock: userContact.delete called with:", params);
+      return {
+        id: params.where.id,
+        deletedAt: new Date()
+      };
+    },
+    findUnique: async (params: any) => {
+      console.log("Mock: userContact.findUnique called with:", params);
+      if (params?.where?.id === 1) {
+        return {
+          id: 1,
+          userWallet: "0x13b8eeaed90d4e6f902dde1bf1770cd75508d00594bbae2bdd6f1554b0dcf61",
+          contactWallet: "0x051DaD7Db80fE3FCDa3f7E41E40A6f3bABe20F1Bb3BcFd9C5a12F0E89f8C9b1D",
+          contactName: "Alice DeFi",
+          contactType: "friend",
+          isActive: true,
+          createdAt: new Date("2025-08-15T10:30:00Z"),
+          tags: ["defi", "trading"],
+          notes: "Active DeFi trader"
+        };
+      }
+      return null;
     }
   },
   agentWallet: {

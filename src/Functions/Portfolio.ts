@@ -230,112 +230,344 @@ export const RebalancerReusableFunction = async (
     stablecoinPercentage: number,
     nativePercentage: number,
     otherPercentage: number,
-    accountAddress:string
+    accountAddress: string
   ) => {
     try {
-   
+      console.log(`🔄 Starting portfolio rebalancing for: ${accountAddress}`);
+      console.log(`📊 Target allocation - Stable: ${stablecoinPercentage}%, Native: ${nativePercentage}%, Other: ${otherPercentage}%`);
+
+      // Validate account address
+      if (!accountAddress || accountAddress === "") {
+        const errorMsg = "Account address is required for portfolio rebalancing";
+        console.error(`❌ ${errorMsg}`);
+        return {
+          success: false,
+          message: errorMsg
+        };
+      }
+
+      console.log("🔍 Checking existing user preferences...");
       const existingPreference = await getUserDiversificationPreference(accountAddress);
       
-      let finalStablePercentage = stablecoinPercentage ;
+      let finalStablePercentage = stablecoinPercentage;
       let finalNativePercentage = nativePercentage;
       let finalOtherPercentage = otherPercentage;
       
+      // Handle undefined percentages
       if (stablecoinPercentage === undefined && nativePercentage === undefined && otherPercentage === undefined) {
         if (!existingPreference) {
+          const errorMsg = "No target allocation provided and no existing preferences found.";
+          console.error(`❌ ${errorMsg}`);
           return {
             success: false,
-            message: "No target allocation provided and no existing preferences found."
+            message: errorMsg,
+            suggestion: "Please provide target allocation percentages (stable, native, other)"
           };
         }
         
         finalStablePercentage = existingPreference.targetAllocation[TokenCategory.STABLECOIN];
         finalNativePercentage = existingPreference.targetAllocation[TokenCategory.NATIVE];
         finalOtherPercentage = existingPreference.targetAllocation[TokenCategory.OTHER];
+        
+        console.log(`📋 Using existing preferences - Stable: ${finalStablePercentage}%, Native: ${finalNativePercentage}%, Other: ${finalOtherPercentage}%`);
       }
       
+      // Validate allocation percentages
       const totalPercentage = finalStablePercentage + finalNativePercentage + finalOtherPercentage;
-      if (totalPercentage !== 100) {
+      if (Math.abs(totalPercentage - 100) > 0.01) {
+        const errorMsg = `Invalid allocation. Percentages must add up to 100%, but they add up to ${totalPercentage}%`;
+        console.error(`❌ ${errorMsg}`);
         return {
           success: false,
-          message: `Invalid allocation. Your percentages must add up to 100%, but they currently add up to ${totalPercentage}%.`
+          message: errorMsg,
+          providedAllocation: {
+            stable: finalStablePercentage,
+            native: finalNativePercentage,
+            other: finalOtherPercentage,
+            total: totalPercentage
+          }
         };
       }
-  
+
+      // Validate individual percentages
+      if (finalStablePercentage < 0 || finalNativePercentage < 0 || finalOtherPercentage < 0) {
+        const errorMsg = "All allocation percentages must be non-negative";
+        console.error(`❌ ${errorMsg}`);
+        return {
+          success: false,
+          message: errorMsg,
+          providedAllocation: {
+            stable: finalStablePercentage,
+            native: finalNativePercentage,
+            other: finalOtherPercentage
+          }
+        };
+      }
+
       const targetAllocation: Record<TokenCategory, number> = {
         [TokenCategory.STABLECOIN]: finalStablePercentage,
         [TokenCategory.NATIVE]: finalNativePercentage,
         [TokenCategory.OTHER]: finalOtherPercentage
-      }; 
+      };
 
-      console.log(targetAllocation)
+      console.log("✅ Target allocation validated:", targetAllocation);
       
+      console.log("📊 Fetching user portfolio...");
       const userPortfolio = await fetchUserPortfolio(accountAddress);
 
+      if (!userPortfolio) {
+        const errorMsg = "Failed to fetch user portfolio";
+        console.error(`❌ ${errorMsg}`);
+        return {
+          success: false,
+          message: errorMsg,
+          accountAddress
+        };
+      }
+
+      if (userPortfolio.total_value_usd === 0) {
+        const errorMsg = "Portfolio has zero value - nothing to rebalance";
+        console.error(`❌ ${errorMsg}`);
+        return {
+          success: false,
+          message: errorMsg,
+          portfolio: userPortfolio
+        };
+      }
+
+      console.log(`💰 Portfolio total value: $${userPortfolio.total_value_usd}`);
+      console.log(`🪙 Number of tokens: ${userPortfolio.tokens.length}`);
+
+      console.log("📈 Calculating current allocation...");
       const currentAllocation = calculateCurrentAllocation(userPortfolio);
+
+      if (!currentAllocation) {
+        const errorMsg = "Failed to calculate current portfolio allocation";
+        console.error(`❌ ${errorMsg}`);
+        return {
+          success: false,
+          message: errorMsg
+        };
+      }
+
+      console.log("📊 Current allocation:", currentAllocation);
+
+      console.log("🔧 Calculating required swaps...");
       const requiredSwaps = calculateRequiredSwaps(
         userPortfolio,
         currentAllocation,
         targetAllocation
       );
 
-      console.log(requiredSwaps)
+      console.log(`💱 Required swaps calculated: ${requiredSwaps.length} swaps needed`);
+      
       if (requiredSwaps.length === 0) {
-
-        await saveUserPreference(accountAddress, targetAllocation);
+        console.log("✅ Portfolio already balanced");
+        
+        try {
+          await saveUserPreference(accountAddress, targetAllocation);
+          console.log("✅ User preferences saved successfully");
+        } catch (saveError: any) {
+          console.warn("⚠️ Warning: Failed to save user preference:", saveError?.message);
+        }
         
         return {
           success: true,
           message: "Portfolio is already balanced according to target allocation.",
           currentAllocation,
           targetAllocation,
-          userPortfolio
+          userPortfolio,
+          details: {
+            totalValue: userPortfolio.total_value_usd,
+            tokenCount: userPortfolio.tokens.length,
+            swapsRequired: 0
+          }
         };
       }
-      //await executeSwapFunction(requiredSwaps,accountAddress)
-      await saveUserPreference(accountAddress, targetAllocation);
+
+      // Log swap details for debugging
+      requiredSwaps.forEach((swap, index) => {
+        console.log(`   Swap ${index + 1}: ${swap.amount.toFixed(6)} tokens from ${swap.from_token_address} to ${swap.to_token_address}`);
+      });
+
+      // Note: Swap execution is commented out - uncomment when ready for live trading
+      console.log("⚠️ Swap execution disabled for safety - enable when ready for live trading");
+      // const swapResults = await executeSwapFunction(requiredSwaps, accountAddress);
+      
+      try {
+        await saveUserPreference(accountAddress, targetAllocation);
+        console.log("✅ User preferences saved successfully");
+      } catch (saveError: any) {
+        console.warn("⚠️ Warning: Failed to save user preference:", saveError?.message);
+      }
+
       return {
         success: true,
-        message: `Swapped the required assets on your behalf, swap successful.`,
-        requiredSwaps:requiredSwaps
+        message: "Portfolio rebalancing plan calculated successfully. Swaps ready for execution.",
+        currentAllocation,
+        targetAllocation,
+        requiredSwaps,
+        userPortfolio,
+        details: {
+          totalValue: userPortfolio.total_value_usd,
+          tokenCount: userPortfolio.tokens.length,
+          swapsCalculated: requiredSwaps.length
+        },
+        note: "Swap execution is currently disabled for safety. Enable executeSwapFunction when ready."
       };
-    } catch (error) {
-      console.error("Portfolio rebalancing failed:", error);
+
+    } catch (error: any) {
+      console.error("❌ Critical error in portfolio rebalancing:", error);
       return {
         success: false,
-        message: `Portfolio rebalancing failed: ${error instanceof Error ? error.message : String(error)}`
+        message: `Portfolio rebalancing failed: ${error?.message || error}`,
+        error: error?.message || error,
+        accountAddress,
+        suggestion: "Please check account address and allocation parameters"
       };
     }
   };
   
 
 
-export const executeSwapFunction=async (swaps:SwapAction[],userAddress:string)=>{
-  try{
+export const executeSwapFunction = async (swaps: SwapAction[], userAddress: string) => {
+  try {
+    console.log(`🔄 Starting swap execution for ${swaps.length} swaps`);
+    console.log(`👛 User address: ${userAddress}`);
 
-  const provider = new Provider({
-    nodeUrl:`${process.env.ALCHEMY_API_KEY}`
-  });
-  
+    if (!swaps || swaps.length === 0) {
+      console.log("ℹ️ No swaps to execute");
+      return {
+        success: true,
+        message: "No swaps required",
+        swaps: []
+      };
+    }
 
-  const account = new Account(
-    provider,
-    userAddress,
-    `${process.env.PVT_KEY}`,
-    undefined,
-    constants.TRANSACTION_VERSION.V3
-  );
-  const txHashes: string[] = [];
+    if (!userAddress) {
+      const errorMsg = "User address is required for swap execution";
+      console.error(`❌ ${errorMsg}`);
+      return {
+        success: false,
+        message: errorMsg
+      };
+    }
 
-  for (const swap of swaps) {
-      const swapSendingHash=await SingularSwapExecution(swap,account.address)
-      console.log(`✅ Swap successful! Tx hash: ${swapSendingHash} ${swap.from_token_address} ${swap.to_token_address}`);
-      txHashes.push(swapSendingHash as string);
-      return swapSendingHash
+    // Validate environment variables
+    if (!process.env.ALCHEMY_API_KEY) {
+      const errorMsg = "ALCHEMY_API_KEY not configured";
+      console.error(`❌ ${errorMsg}`);
+      return {
+        success: false,
+        message: errorMsg
+      };
+    }
+
+    if (!process.env.PVT_KEY) {
+      const errorMsg = "PVT_KEY not configured for swap execution";
+      console.error(`❌ ${errorMsg}`);
+      return {
+        success: false,
+        message: errorMsg
+      };
+    }
+
+    const provider = new Provider({
+      nodeUrl: `${process.env.ALCHEMY_API_KEY}`
+    });
+
+    const account = new Account(
+      provider,
+      userAddress,
+      `${process.env.PVT_KEY}`,
+      undefined,
+      constants.TRANSACTION_VERSION.V3
+    );
+
+    console.log("✅ Account and provider initialized");
+
+    const txHashes: string[] = [];
+    const swapResults = [];
+
+    for (let i = 0; i < swaps.length; i++) {
+      const swap = swaps[i];
+      console.log(`🔄 Executing swap ${i + 1}/${swaps.length}`);
+      console.log(`   From: ${swap.from_token_address}`);
+      console.log(`   To: ${swap.to_token_address}`);
+      console.log(`   Amount: ${swap.amount}`);
+
+      try {
+        const swapSendingHash = await SingularSwapExecution(swap, account.address);
+        
+        if (swapSendingHash) {
+          console.log(`✅ Swap ${i + 1} successful! Tx hash: ${swapSendingHash}`);
+          txHashes.push(swapSendingHash as string);
+          swapResults.push({
+            swapIndex: i + 1,
+            fromToken: swap.from_token_address,
+            toToken: swap.to_token_address,
+            amount: swap.amount,
+            transactionHash: swapSendingHash,
+            success: true
+          });
+        } else {
+          console.error(`❌ Swap ${i + 1} failed - no transaction hash returned`);
+          swapResults.push({
+            swapIndex: i + 1,
+            fromToken: swap.from_token_address,
+            toToken: swap.to_token_address,
+            amount: swap.amount,
+            success: false,
+            error: "No transaction hash returned"
+          });
+        }
+
+        // Add delay between swaps to avoid rate limiting
+        if (i < swaps.length - 1) {
+          console.log("⏳ Waiting 2 seconds before next swap...");
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+
+      } catch (swapError: any) {
+        console.error(`❌ Error in swap ${i + 1}:`, swapError);
+        swapResults.push({
+          swapIndex: i + 1,
+          fromToken: swap.from_token_address,
+          toToken: swap.to_token_address,
+          amount: swap.amount,
+          success: false,
+          error: swapError?.message || swapError
+        });
+      }
+    }
+
+    const successfulSwaps = swapResults.filter(result => result.success);
+    const failedSwaps = swapResults.filter(result => !result.success);
+
+    console.log(`📊 Swap execution summary:`);
+    console.log(`   ✅ Successful: ${successfulSwaps.length}`);
+    console.log(`   ❌ Failed: ${failedSwaps.length}`);
+    console.log(`   📝 Total transaction hashes: ${txHashes.length}`);
+
+    return {
+      success: successfulSwaps.length > 0,
+      message: `Executed ${successfulSwaps.length}/${swaps.length} swaps successfully`,
+      transactionHashes: txHashes,
+      swapResults,
+      summary: {
+        totalSwaps: swaps.length,
+        successfulSwaps: successfulSwaps.length,
+        failedSwaps: failedSwaps.length
+      }
+    };
+
+  } catch (err: any) {
+    console.error("❌ Critical error in swap execution:", err);
+    return {
+      success: false,
+      message: "Critical error during swap execution",
+      error: err?.message || err,
+      suggestion: "Please check your wallet configuration and network connectivity"
+    };
   }
-  return txHashes;
- 
-}catch(err){
-    console.log("The error is",err)
-    return err;
-  }
-} 
+}; 

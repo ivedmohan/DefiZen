@@ -82,23 +82,48 @@ const getTopStarknetTokensTool = tool(
 const getTokenDetailsTool = tool(
 	async ({name }: { symbol: string, name: string }) => {
 		const tokens = await FetchSupportedTokens();
-		let Token = tokens.find((token: Token) => token.name.toLowerCase() === name);
-		if (!Token?.chain_id) {
-			Token = tokens.find((token: Token) => token.name.toLowerCase() === name);
+		let Token = tokens.find((token: Token) => 
+			token.name.toLowerCase() === name.toLowerCase() || 
+			token.name.toUpperCase() === name.toUpperCase()
+		);
+		
+		if (!Token) {
+			console.log(`❌ Token not found: ${name}`);
+			return JSON.stringify({
+				error: `Token ${name} not found`,
+				availableTokens: tokens.map(t => t.name)
+			}, null, 2);
 		}
-		console.log("The token address is",name)
+
+		console.log(`✅ Found token: ${Token.name} at address: ${Token.token_address}`);
+		
 		try {
-			const priceHistory = await getTokenPrice(Token?.token_address as string);
+			const priceHistory = await getTokenPrice(Token.token_address as string);
 
 			return JSON.stringify({
 				token: {
-					name: Token?.name,
-					address: Token?.token_address,
-					price: priceHistory
+					name: Token.name,
+					symbol: Token.name,
+					address: Token.token_address,
+					decimals: Token.decimals,
+					type: Token.type,
+					price: priceHistory,
+					image: Token.image
 				}
 			}, null, 2);
-		} catch (error) {
-			return (`Failed to fetch token details: ${error instanceof Error ? error.message : 'Unknown error'}`);
+		} catch (error: any) {
+			console.error(`❌ Error fetching price for ${Token.name}:`, error);
+			return JSON.stringify({
+				token: {
+					name: Token.name,
+					symbol: Token.name,
+					address: Token.token_address,
+					decimals: Token.decimals,
+					type: Token.type,
+					image: Token.image
+				},
+				error: `Failed to fetch price: ${error instanceof Error ? error.message : 'Unknown error'}`
+			}, null, 2);
 		}
 	},
 	{

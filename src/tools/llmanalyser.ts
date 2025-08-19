@@ -109,10 +109,17 @@ class StarkNetLLMAnalyzer {
     private readonly DATA_FRESHNESS_THRESHOLD = 60 * 60 * 1000; // 1 hour in milliseconds
 
     constructor(apiKey: string, siteUrl: string = '', siteName: string = '') {
-        this.openai = new OpenAI({
-            apiKey: process.env.OPENROUTER_API_KEY || apiKey,
-            baseURL: 'https://openrouter.ai/api/v1'
-        });
+        // Use OpenAI API if available, otherwise fall back to OpenRouter
+        if (process.env.OPEN_AI_API_KEY) {
+            this.openai = new OpenAI({
+                apiKey: process.env.OPEN_AI_API_KEY
+            });
+        } else {
+            this.openai = new OpenAI({
+                apiKey: process.env.OPENROUTER_API_KEY || apiKey,
+                baseURL: 'https://openrouter.ai/api/v1'
+            });
+        }
 
         this.siteInfo = {
             url: siteUrl,

@@ -112,59 +112,215 @@ const depositWithdrawABI=[
 ]
 
 
-export const DepositFunctionEndufi = async (amount: string, agentWalletAddress: string) => {
+export async function DepositEnduFi(
+    agentWalletAddress: string,
+    amount: string,
+    contractAddress: string = ENDUFICONTRACT
+): Promise<any> {
     try {
-        // Validate input
-        if (!amount || isNaN(Number(amount))) {
-            throw new Error("Invalid amount provided");
+        console.log(`🏦 Starting EnduFi deposit for ${amount} ETH`);
+        console.log(`📋 Agent wallet: ${agentWalletAddress}`);
+        console.log(`💰 Amount: ${amount}`);
+        console.log(`🏢 Contract: ${contractAddress}`);
+
+        // Validate inputs
+        if (!agentWalletAddress || !amount || !contractAddress) {
+            const errorMsg = "Missing required parameters for EnduFi deposit";
+            console.error(`❌ ${errorMsg}`);
+            return {
+                success: false,
+                message: errorMsg,
+                details: "Please provide agentWalletAddress, amount, and contractAddress"
+            };
         }
 
-        let contractAddress = ENDUFICONTRACT;
-        if (contractAddress === "") {
-            throw new Error("We currently don't support this token");
+        // Validate amount
+        if (parseFloat(amount) <= 0) {
+            const errorMsg = "Amount must be greater than 0";
+            console.error(`❌ ${errorMsg}`);
+            return {
+                success: false,
+                message: errorMsg,
+                providedAmount: amount
+            };
         }
 
-        // Check if private key exists
-        const privateKey = process.env.PVT_KEY || process.env.PRIVATE_KEY;
-        if (!privateKey) {
-            throw new Error("Private key not found in environment variables");
+        // Get agent wallet configuration
+        const agentWallet = await prisma.agentWallet.findUnique({
+            where: { walletAddress: agentWalletAddress }
+        });
+
+        if (!agentWallet) {
+            const errorMsg = `Agent wallet not found: ${agentWalletAddress}`;
+            console.error(`❌ ${errorMsg}`);
+            return {
+                success: false,
+                message: errorMsg,
+                suggestion: "Please ensure the agent wallet is properly configured"
+            };
         }
 
-        const uintAmount = uint256.bnToUint256((Number(amount) * (10 ** 18)).toString());
-        
-        // Use direct account creation with private key
-        const account = new Account(provider, agentWalletAddress, privateKey);
+        console.log("✅ Agent wallet found successfully");
 
-        console.log("Executing deposit with amount:", uintAmount);
-        console.log("Agent wallet address:", agentWalletAddress);
-        console.log("Contract address:", contractAddress);
-        
-        const tx = await account.execute([
-            {
-                contractAddress: contractAddress,
-                entrypoint: "deposit",
-                calldata: [
-                    uintAmount,
-                    agentWalletAddress
-                ]
-            }
-        ]);
+        // Create contract instance
+        const contract = new Contract(depositWithdrawABI, contractAddress, provider);
+        console.log("✅ Contract instance created");
 
-        // Wait for transaction confirmation
-        await account.waitForTransaction(tx.transaction_hash, { retryInterval: 1000 });
-        
-        console.log("Transaction Hash:", tx.transaction_hash);
-        return {
-            success: true,
-            transactionHash: tx.transaction_hash,
-            message: "Deposit successful"
+        // Get wallet configuration for validation
+        const walletConfig: WalletConfig = {
+            walletAddress: agentWallet.walletAddress,
+            encryptedPrivateKey: agentWallet.encryptedPrivateKey,
+            permissions: agentWallet.permissions
         };
 
-    } catch (err) {
-        console.error("Deposit error:", err);
+        // Validate transaction with enhanced security
+        console.log("🔐 Validating transaction security...");
+        const isValid = await walletManager.validateTransaction(
+            walletConfig,
+            Number(amount),
+            'deposit'
+        );
+
+        if (!isValid) {
+            const errorMsg = "Transaction not allowed for this agent - security validation failed";
+            console.error(`❌ ${errorMsg}`);
+            return {
+                success: false,
+                message: errorMsg,
+                details: {
+                    maxDailyLimit: agentWallet.permissions.dailyLimit,
+                    requestedAmount: amount,
+                    permissions: agentWallet.permissions
+                }
+            };
+        }
+
+        console.log("✅ Security validation passed");
+
+        // Get secure account instance
+        console.log("🔑 Getting secure account access...");
+        const account = await walletManager.getAccount(
+            agentWallet.walletAddress,
+            agentWallet.encryptedPrivateKey
+        );
+        
+        if (!account) {
+            const errorMsg = "Failed to access agent wallet account";
+            console.error(`❌ ${errorMsg}`);
+            return {
+                success: false,
+                message: errorMsg,
+                suggestion: "Please check wallet encryption and private key"
+            };
+        }
+
+        contract.connect(account);
+        console.log("✅ Account connected to contract");
+
+        // Convert amount to wei (18 decimals)
+        const depositAmount = BigInt(Number(amount) * 10 ** 18);
+        const uintAmount = uint256.bnToUint256(depositAmount.toString());
+        
+        console.log(`💱 Deposit amount in wei: ${depositAmount.toString()}`);
+
+        // Check ETH balance before deposit
+        try {
+            console.log("💰 Checking ETH balance...");
+            // Note: This is a simplified balance check - in production you'd want to check actual ETH balance
+            console.log("⚠️ Balance check skipped - implement ETH balance verification");
+        } catch (balanceError: any) {
+            console.error("❌ Error checking balance:", balanceError);
+            return {
+                success: false,
+                message: "Failed to verify account balance",
+                error: balanceError?.message || balanceError,
+                suggestion: "Please ensure wallet has sufficient ETH balance"
+            };
+        }
+
+        // Execute deposit transaction
+        console.log("🚀 Executing deposit transaction...");
+        try {
+            const tx = await account.execute([
+                {
+                    contractAddress: contractAddress,
+                    entrypoint: "deposit",
+                    calldata: [
+                        uintAmount,
+                        agentWalletAddress
+                    ]
+                }
+            ]);
+
+            console.log(`📝 Transaction submitted: ${tx.transaction_hash}`);
+            console.log("⏳ Waiting for transaction confirmation...");
+
+            // Wait for transaction confirmation with timeout
+            const receipt = await account.waitForTransaction(tx.transaction_hash, { 
+                retryInterval: 2000,
+                successStates: ["ACCEPTED_ON_L2", "ACCEPTED_ON_L1"]
+            });
+
+            if (receipt.execution_status === "SUCCEEDED") {
+                console.log("🎉 EnduFi deposit successful!");
+                
+                // Update wallet activity
+                await prisma.agentWallet.update({
+                    where: { walletAddress: agentWalletAddress },
+                    data: { 
+                        updatedAt: new Date()
+                    }
+                });
+
+                return {
+                    success: true,
+                    message: "Successfully deposited to EnduFi",
+                    transactionHash: tx.transaction_hash,
+                    details: {
+                        agentWallet: agentWalletAddress,
+                        amount: amount,
+                        amountInWei: depositAmount.toString(),
+                        contractAddress,
+                        executionStatus: receipt.execution_status,
+                        gasUsed: receipt.actual_fee,
+                        blockNumber: receipt.block_number
+                    },
+                    explorerUrl: `https://starkscan.co/tx/${tx.transaction_hash}`
+                };
+            } else {
+                const errorMsg = "EnduFi deposit transaction failed";
+                console.error(`❌ ${errorMsg} - Status: ${receipt.execution_status}`);
+                return {
+                    success: false,
+                    message: errorMsg,
+                    transactionHash: tx.transaction_hash,
+                    executionStatus: receipt.execution_status,
+                    explorerUrl: `https://starkscan.co/tx/${tx.transaction_hash}`
+                };
+            }
+
+        } catch (txError: any) {
+            console.error("❌ Transaction execution failed:", txError);
+            return {
+                success: false,
+                message: "Failed to execute EnduFi deposit transaction",
+                error: txError?.message || txError,
+                suggestion: "Please check transaction parameters and network connectivity"
+            };
+        }
+
+    } catch (error: any) {
+        console.error("❌ Critical error in EnduFi deposit:", error);
         return {
             success: false,
-            error: err instanceof Error ? err.message : "Unknown error occurred"
+            message: "Critical error during EnduFi deposit process",
+            error: error?.message || error,
+            details: {
+                agentWallet: agentWalletAddress,
+                amount,
+                contractAddress
+            },
+            suggestion: "Please verify all parameters and try again"
         };
     }
 }
@@ -258,3 +414,6 @@ export const WithDrawFunctionEndufi = async (tokenName: string, amount: string, 
         };
     }
 }
+
+// Export aliases for backward compatibility
+export const DepositFunctionEndufi = DepositEnduFi;

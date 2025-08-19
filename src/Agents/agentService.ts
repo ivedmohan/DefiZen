@@ -13,7 +13,7 @@ import { starknetTokenDetailsTool, starknetTokenDetailsTools } from "../tools/st
 ;
 
 const starknetAnalyzer = new StarkNetLLMAnalyzer(
-	process.env.OPENROUTER_API_KEY || process.env.ANTHROPIC_API_KEY || ""
+	process.env.OPEN_AI_API_KEY || process.env.ANTHROPIC_API_KEY || ""
 );
 
 const analyze_sentiment_analyzer = createStarkNetAnalyzerTool(starknetAnalyzer);
@@ -60,11 +60,22 @@ export async function chatFunction(
 	}
 ): Promise<ChatResponse>{
 	console.log("Processing chat messages...");
+	
+	// Validate messages parameter
+	if (!messages || !Array.isArray(messages)) {
+		console.error("❌ Invalid messages parameter:", messages);
+		return {
+			agentMessages: ["Sorry, I couldn't process your request due to invalid message format."],
+			toolOutputs: [],
+			finalResponse: "Sorry, I couldn't process your request due to invalid message format."
+		};
+	}
+
 	const systemMessage = SYSTEM_PROMPT.replace("{{address}}", address);
 	const memory = new MemorySaver();
 
 	const formattedMessages = messages.map(msg => {
-		console.log("The user msg is",msg.content)
+		console.log("The user msg is", msg.content)
 		if (msg.role === 'user') {
 			
 			return new HumanMessage(msg.content);

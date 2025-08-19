@@ -14,7 +14,9 @@ interface Suggestion {
 	confidence: number;
 }
 
-const openai = new OpenAI();
+const openai = new OpenAI({
+	apiKey: process.env.OPEN_AI_API_KEY
+});
 
 async function generateSuggestions(aiMessage: string, maxSuggestions: number): Promise<Suggestion[]> {
 	try {

@@ -62,14 +62,23 @@ AutonomousRouter.get("/getTransactionsByAgent",async (req:Request, res:Response)
 // New route for autonomous profit maximization
 AutonomousRouter.post("/maximizeProfit", async (req: Request, res: Response): Promise<any> => {
     try {
-        console.log("🚀 Starting autonomous profit maximization...");
+        const { agentId } = req.body;
+        console.log("🚀 Starting autonomous profit maximization for:", agentId);
         
-        const result = await maximiseProfit();
+        // Import the AutonomousManager
+        const { AutonomousManager } = await import("../Functions/AutonomousManager");
+        
+        // Execute autonomous strategy
+        const result = await AutonomousManager.executeAutonomousStrategy(agentId);
         
         return res.status(200).send({
-            success: true,
-            message: "Autonomous profit maximization completed",
-            data: result
+            success: result.success,
+            message: result.summary,
+            data: {
+                actions: result.actions,
+                agentId: agentId,
+                timestamp: new Date().toISOString()
+            }
         });
     } catch (err) {
         console.error("❌ Error in autonomous profit maximization:", err);
@@ -77,6 +86,34 @@ AutonomousRouter.post("/maximizeProfit", async (req: Request, res: Response): Pr
             success: false,
             message: "Error in autonomous profit maximization",
             error: err instanceof Error ? err.message : "Unknown error"
+        });
+    }
+});
+
+// New route for autonomous status
+AutonomousRouter.get("/status", async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { agentId } = req.query;
+        
+        if (!agentId) {
+            return res.status(400).send({
+                success: false,
+                message: "Agent ID is required"
+            });
+        }
+
+        const { AutonomousManager } = await import("../Functions/AutonomousManager");
+        const status = await AutonomousManager.getDepositStatus(agentId.toString());
+        
+        return res.status(200).send({
+            success: true,
+            data: status
+        });
+    } catch (err) {
+        console.error("❌ Error fetching autonomous status:", err);
+        return res.status(500).send({
+            success: false,
+            message: "Error fetching autonomous status"
         });
     }
 });
