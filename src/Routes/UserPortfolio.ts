@@ -3,7 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { Request,Response } from "express";
 import { fetchUserPortfolio } from "../Functions/Portfolio";
-import { mockPrisma as prisma } from "../db-mock";
+import { prisma } from "../db";
 dotenv.config()
 
 export const UserPortfolioRouter=express.Router();
@@ -57,11 +57,11 @@ UserPortfolioRouter.get("/agentTotal", async (req: Request, res: Response): Prom
 
         // Calculate total deposited, total trades value, etc.
         const totalDeposited = deposits.reduce((sum, deposit) => {
-            return sum + parseFloat(deposit.amount || "0");
+            return sum + parseFloat(deposit.amount.toString() || "0");
         }, 0);
 
         const totalTradesValue = trades.reduce((sum, trade) => {
-            return sum + parseFloat(trade.amount || "0");
+            return sum + parseFloat(trade.amount.toString() || "0");
         }, 0);
 
         const agentTotal = {

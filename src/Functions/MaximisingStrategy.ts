@@ -175,9 +175,18 @@ interface Token {
   }
 
 
-  export async function maximiseProfit(): Promise<any> {
+  export async function maximiseProfit(agentWalletAddress?: string): Promise<any> {
     try {
-      const tokenData = await fetchCurrentTokenData();
+      const tokenData = await fetchCurrentTokenData(agentWalletAddress);
+      
+      if (tokenData.length === 0) {
+        return {
+          executed: false,
+          reason: "No tokens found in agent wallet",
+          recommendation: "Agent wallet appears to be empty"
+        };
+      }
+      
       const marketAnalysis = await analyzeMarketConditions(tokenData);
       console.log("THe market analysis is",marketAnalysis)
       const { allocations } = determineOptimalAllocation(tokenData, marketAnalysis);
@@ -230,49 +239,37 @@ interface Token {
   }
   
 
-  async function fetchCurrentTokenData(): Promise<Token[]> {
-    return [
-      {
-        name: 'USDC',
-        balance: '0.222271',
-        valueUsd: '0.22',
-        decimals: 6,
-        address: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
-        type: 'stable',
-        priceUsd: '1.0008041614708894',
-        volatility: 0.0017739288721658301
-      },
-      {
-        name: 'USDT',
-        balance: '0.42068',
-        valueUsd: '0.42',
-        decimals: 6,
-        address: '0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8',
-        type: 'stable',
-        priceUsd: '0.9965759544613709',
-        volatility: 0.0057407890999721465
-      },
-      {
-        name: 'STRK',
-        balance: '0.49638228990169336',
-        valueUsd: '0.06',
-        decimals: 18,
-        address: '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
-        type: 'native',
-        priceUsd: '0.12073737661674283',
-        volatility: -5.913386533391213
-      },
-      {
-        name: 'ETHEREUM',
-        balance: '0.002125569932958858',
-        valueUsd: '3.47',
-        decimals: 18,
-        address: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
-        type: 'native',
-        priceUsd: '1631.5',
-        volatility: -3.0245189956791445
-      }
-    ];
+  async function fetchCurrentTokenData(agentWalletAddress?: string): Promise<Token[]> {
+    // Use agent wallet address from env if not provided
+    const walletAddress = agentWalletAddress || process.env.WALLET_ADDRESS || ACCOUNT_ADDRESS;
+    
+    try {
+      // Import the portfolio function
+      const { fetchUserPortfolio } = await import('./Portfolio');
+      
+      // Fetch real portfolio data
+      const portfolio = await fetchUserPortfolio(walletAddress);
+      
+      // Transform to Token format with volatility
+      const tokens: Token[] = portfolio.tokens.map((token: any) => ({
+        name: token.name,
+        balance: token.balance,
+        valueUsd: token.valueUsd,
+        decimals: token.decimals,
+        address: token.address,
+        type: token.type,
+        priceUsd: token.priceUsd || '0',
+        volatility: Math.random() * 10 - 5  // TODO: Get real volatility data
+      }));
+      
+      console.log(`📊 Fetched ${tokens.length} tokens for agent wallet ${walletAddress}`);
+      return tokens;
+      
+    } catch (error) {
+      console.error("Error fetching portfolio data:", error);
+      // Fallback to empty array if error
+      return [];
+    }
   }
   
   async function executeDeposits(

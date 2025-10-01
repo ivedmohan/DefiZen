@@ -5,7 +5,7 @@ import { Account } from "starknet";
 import dotenv from "dotenv";
 import { uint256 } from "starknet";
 import { walletManager, WalletConfig } from "../utils/walletManager";
-import { mockPrisma as prisma } from "../db-mock";
+import { prisma } from "../db";
 
 dotenv.config()
 
@@ -167,10 +167,20 @@ export async function DepositEnduFi(
         console.log("✅ Contract instance created");
 
         // Get wallet configuration for validation
+        const permissions = typeof agentWallet.permissions === 'object' && agentWallet.permissions !== null
+            ? agentWallet.permissions as any
+            : {
+                canDeposit: true,
+                canWithdraw: true,
+                canSwap: true,
+                maxTransactionSize: 1000000,
+                dailyLimit: 10000000
+            };
+
         const walletConfig: WalletConfig = {
             walletAddress: agentWallet.walletAddress,
             encryptedPrivateKey: agentWallet.encryptedPrivateKey,
-            permissions: agentWallet.permissions
+            permissions: permissions
         };
 
         // Validate transaction with enhanced security
@@ -188,9 +198,9 @@ export async function DepositEnduFi(
                 success: false,
                 message: errorMsg,
                 details: {
-                    maxDailyLimit: agentWallet.permissions.dailyLimit,
+                    maxDailyLimit: permissions.dailyLimit,
                     requestedAmount: amount,
-                    permissions: agentWallet.permissions
+                    permissions: permissions
                 }
             };
         }

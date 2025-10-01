@@ -8,7 +8,7 @@ import {
   searchContacts, 
   getContactByWallet 
 } from "../Functions/UserContacts";
-import { mockPrisma as prisma } from "../db-mock";
+import { prisma } from "../db";
 
 export const UserContactRouter: Router = express.Router();
 

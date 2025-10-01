@@ -11,8 +11,8 @@ import { FetchVolatileTokens } from "./Functions/FetchVolatileTokens";
 import { SwapVolatileAssets } from "./Functions/FetchVolatileTokens";
 import { CronJob, CronTime } from 'cron';
 import { RebalancerReusableFunction } from "./Functions/Portfolio";
-import { mockPrisma as prisma } from "./db-mock";
-import { UserContactRouter } from "./Routes/UserContact";
+import { prisma } from "./db";
+// import { UserContactRouter } from "./Routes/UserContact"; // Temporarily disabled
 import { AutonomousRouter } from "./Routes/Autonomous";
 import { DepositWithdrawRouter } from "./Routes/DepositWithdraw";
 import { AgentWalletRouter } from "./Routes/AgentWallet";
@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 app.use("/userPortfolio",UserPortfolioRouter);
 app.use("/autonomous",AutonomousRouter);
 app.use("/rebalance",RebalancePortfolioRouter);
-app.use("/userContact",UserContactRouter);
+// app.use("/userContact",UserContactRouter); // Temporarily disabled
 app.use("/depositWithdraw",DepositWithdrawRouter);
 app.use("/agent/wallet",AgentWalletRouter);
 
@@ -82,7 +82,7 @@ const rebalancerJob=new CronJob(
 const volatileJob=new CronJob(
   '0 0 */6 * * *',
   async function(){
-    console.log("🔄 Running rebalancer job...");
+    console.log("🔄 Running volatile asset swapping job...");
     const user=await prisma.user.findMany();
     const response=await Promise.all(user.map(async (item: any)=>{
       const result= await SwapVolatileAssets(item.walletAddress);
@@ -92,6 +92,54 @@ const volatileJob=new CronJob(
    },
    ()=>{
     console.log("Ran the Volatile Asset Swapping function")
+   },
+  true,
+'Asia/Kolkata'
+)
+
+// NEW: Autonomous Trading Cron Job
+const autonomousJob=new CronJob(
+  '0 0 */6 * * *',  // Every 6 hours
+  async function(){
+    console.log("🤖 Running autonomous trading job...");
+    
+    try {
+      // Get all unique agent wallets with active deposits
+      const deposits = await prisma.deposit.findMany({
+        select: {
+          agentWallet: true
+        },
+        distinct: ['agentWallet']
+      });
+      
+      console.log(`Found ${deposits.length} agent wallet(s) to process`);
+      
+      // Execute strategy for each agent wallet
+      const { AutonomousManager } = await import("./Functions/AutonomousManager");
+      
+      for (const deposit of deposits) {
+        console.log(`\n🎯 Processing agent: ${deposit.agentWallet}`);
+        
+        try {
+          const result = await AutonomousManager.executeAutonomousStrategy(deposit.agentWallet);
+          
+          if (result.success) {
+            console.log(`✅ ${result.summary}`);
+          } else {
+            console.log(`ℹ️  ${result.summary}`);
+          }
+        } catch (agentError) {
+          console.error(`❌ Error processing agent ${deposit.agentWallet}:`, agentError);
+        }
+      }
+      
+      console.log("\n✅ Autonomous trading job completed.");
+    } catch (error) {
+      console.error("❌ Autonomous job error:", error);
+    }
+   },
+   ()=>{
+    console.log("Autonomous trading job initialized")
    },
   true,
 'Asia/Kolkata'

@@ -1,5 +1,5 @@
 
-import { mockPrisma as db } from "../db-mock";
+import { prisma as db } from "../db";
 
 interface Contact {
   id?: number;

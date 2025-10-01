@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Fraction, Percent } from "@uniswap/sdk-core";
 import { ProtocolConfigObject } from '../config/protocolConfig';
 import dotenv from 'dotenv';
-import { mockPrisma as prisma } from '../db-mock';
+import { prisma } from '../db';
 dotenv.config()
 
 const protocolConfig: ProtocolConfig = ProtocolConfigObject

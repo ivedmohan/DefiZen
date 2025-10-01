@@ -7,7 +7,7 @@ import { fetchTokenPrices } from "../utils/defiUtils";
 import { fetchTokenBalance } from "../utils/defiUtils";
 import { SwapAction } from "../types/defi";
 import { ec, stark, hash, transaction } from 'starknet';
-import { mockPrisma as prisma } from "../db-mock";
+import { prisma } from "../db";
 import axios from "axios";
 import dotenv from "dotenv";
 import { WeierstrassSignatureType, Signature, Account } from "starknet";

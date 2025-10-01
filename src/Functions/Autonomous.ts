@@ -1,4 +1,4 @@
-import { mockPrisma as prisma } from "../db-mock";
+import { prisma } from "../db";
 interface TradeInput {
     agentWallet: string;
     amount: number; 

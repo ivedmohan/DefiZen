@@ -117,3 +117,36 @@ AutonomousRouter.get("/status", async (req: Request, res: Response): Promise<any
         });
     }
 });
+
+// NEW: Manual trigger for testing autonomous mode immediately
+AutonomousRouter.post("/executeNow", async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { agentWallet } = req.body;
+        
+        if (!agentWallet) {
+            return res.status(400).send({
+                success: false,
+                message: "Agent wallet address is required"
+            });
+        }
+
+        console.log(`🚀 Manual trigger: Executing autonomous strategy for ${agentWallet}`);
+        
+        const { AutonomousManager } = await import("../Functions/AutonomousManager");
+        const result = await AutonomousManager.executeAutonomousStrategy(agentWallet);
+        
+        return res.status(200).send({
+            success: result.success,
+            message: result.summary,
+            actions: result.actions,
+            timestamp: new Date().toISOString()
+        });
+    } catch (err) {
+        console.error("❌ Error in manual autonomous execution:", err);
+        return res.status(500).send({
+            success: false,
+            message: "Error executing autonomous strategy",
+            error: err instanceof Error ? err.message : "Unknown error"
+        });
+    }
+});

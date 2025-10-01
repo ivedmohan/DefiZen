@@ -61,6 +61,5 @@ export const STAKING_ABI = [
 	}
 ] as const;
 
-
-
-export const ACCOUNT_ADDRESS="0x013B8eEAEd90D4E6F902ddE1BF1770cd75508D00594bBAE2bdd6f1554B0dCF61"
+// Use wallet address from environment variables
+export const ACCOUNT_ADDRESS = process.env.WALLET_ADDRESS || "0x013B8eEAEd90D4E6F902ddE1BF1770cd75508D00594bBAE2bdd6f1554B0dCF61"

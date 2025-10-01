@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { Request, Response, RequestHandler } from "express";
 import { walletManager } from "../utils/walletManager";
-import { mockPrisma as prisma } from "../db-mock";
+import { prisma } from "../db";
 import { validateRequest } from "../middleware/validation";
 import { z } from "zod";
 import { logInfo, logError } from "../utils/logger";

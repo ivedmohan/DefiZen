@@ -3,7 +3,7 @@ import { z } from "zod";
 import { SwapAction, Token } from "../types/defi";
 import { FetchSupportedTokens } from "../utils/defiUtils";
 import { SingularSwapExecution } from "../Functions/SwapFunction";
-import { mockPrisma as prisma } from "../db-mock";
+import { prisma } from "../db";
 
 
 export const executeSwapTool = tool(
