@@ -99,7 +99,7 @@ const volatileJob=new CronJob(
 
 // NEW: Autonomous Trading Cron Job
 const autonomousJob=new CronJob(
-  '0 0 */6 * * *',  // Every 6 hours
+  '0 0 */1 * * *',  // Every 1 hour (changed from 6 hours for demo)
   async function(){
     console.log("🤖 Running autonomous trading job...");
     

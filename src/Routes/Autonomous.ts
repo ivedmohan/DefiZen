@@ -150,3 +150,37 @@ AutonomousRouter.post("/executeNow", async (req: Request, res: Response): Promis
         });
     }
 });
+
+// NEW: Direct volatility swap endpoint for testing
+AutonomousRouter.post("/swapVolatile", async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { agentWallet } = req.body;
+        
+        if (!agentWallet) {
+            return res.status(400).send({
+                success: false,
+                message: "Agent wallet address is required"
+            });
+        }
+
+        console.log(`🔄 Volatility check triggered for ${agentWallet}`);
+        
+        const { SwapVolatileAssets } = await import("../Functions/FetchVolatileTokens");
+        const result = await SwapVolatileAssets(agentWallet);
+        
+        return res.status(200).send({
+            success: result?.success || false,
+            message: result?.message || "Volatility check completed",
+            timestamp: new Date().toISOString()
+        });
+    } catch (err) {
+        console.error("❌ Error in volatility swap:", err);
+        return res.status(500).send({
+            success: false,
+            message: "Error executing volatility swap",
+            error: err instanceof Error ? err.message : "Unknown error"
+        });
+    }
+});
+
+export default AutonomousRouter;

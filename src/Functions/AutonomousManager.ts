@@ -48,15 +48,29 @@ export class AutonomousManager {
     const actions: string[] = [];
     
     try {
+      // Step 0: Check for high volatility and swap if needed
+      actions.push("🔍 Checking for volatile tokens...");
+      const { SwapVolatileAssets } = await import('./FetchVolatileTokens');
+      const volatilityCheck = await SwapVolatileAssets(agentWallet);
+      
+      if (volatilityCheck && volatilityCheck.success) {
+        actions.push(`✅ Volatility check: ${volatilityCheck.message}`);
+      } else {
+        actions.push(`ℹ️  Volatility check: Market stable, no swaps needed`);
+      }
+      
       // Step 1: Check deposits
       const deposits = await this.getActiveDeposits(agentWallet);
       actions.push(`Found ${deposits.length} active deposits`);
       
       if (deposits.length === 0) {
+        // Even with no deposits, we still did volatility management
         return {
-          success: false,
+          success: volatilityCheck?.success || false,
           actions,
-          summary: "No active deposits found for autonomous trading"
+          summary: volatilityCheck?.success 
+            ? "Volatility management executed. No user deposits to process."
+            : "No active deposits found for autonomous trading"
         };
       }
 
