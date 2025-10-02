@@ -43,7 +43,7 @@ export function ContactWrapper() {
       setContacts(contacts)
     }
     fetchUserContacts();
-  },[])
+  }, [agentWalletAddress])
 
   const handleAddContact = async (contact: Omit<Contact, "id">) => {
     const newContact =contact;

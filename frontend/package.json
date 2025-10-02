@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "axios": "^1.7.9",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@langchain/anthropic": "^0.3.15",
@@ -20,8 +19,10 @@
     "@mui/x-charts": "^7.27.1",
     "@panoraexchange/swap-sdk": "^1.0.8",
     "@prisma/client": "^6.4.1",
+    "@starknet-react/chains": "^5.0.3",
     "@starknet-react/core": "^3.7.2",
     "@tensorflow/tfjs": "^4.22.0",
+    "axios": "^1.7.9",
     "dotenv": "^16.5.0",
     "ldrs": "^1.0.2",
     "lucide-react": "^0.482.0",

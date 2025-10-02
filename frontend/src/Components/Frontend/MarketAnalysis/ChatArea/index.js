@@ -103,7 +103,7 @@ const PredictionChatArea = () => {
             })
             :
                 (<div className="ReadyQuery">
-                      <span>Welcome to the Defiant! Select a token and ask me to perform it's Market Analysis!</span>
+                      <span>Welcome to the Defiant! Select a token and ask me to perform its Market Analysis!</span>
                     </div>)}
                   <div className="TopContainer">
         <GraphContainer_1.TvlGraphContainer tokenName={tokenName}/>

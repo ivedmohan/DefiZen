@@ -3,9 +3,9 @@ import "./styles.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { useState } from "react";
-import { connect, StarknetWindowObject } from '@starknet-io/get-starknet'; 
+import { useConnect, useDisconnect, useAccount, Connector } from "@starknet-react/core";
+import { StarknetkitConnector, useStarknetkitConnectModal } from "starknetkit";
 import { RpcProvider, uint256 } from "starknet";
-import { WalletAccount, provider, wallet } from 'starknet'; 
 import { AGENT_CONTRACT_ADDRESS, BACKEND_URL } from "@/Components/Backend/Common/Constants";
 import { useAgentStore } from "@/store/agent-store";
 import { TransacitonsContainer } from "./Transactions.tsx";
@@ -14,15 +14,20 @@ import { useShallow } from "zustand/react/shallow";
 
 
 export const AutonomousAgentInterface=()=>{
-    const provider = new RpcProvider({ nodeUrl: process.env.ALCHEMY_API_KEY });
     const [deadline, setDeadline] = useState(new Date());
     const [amount, setAmount]=useState<string>("0.00");
     const [stopLoss, setStopLoss]=useState<string>("0.00");
-    const [account, setAccount] = useState<WalletAccount | null>(null);
     const [loading, setLoading] = useState(false);
     const [totalAmount,setTotalAmount]=useState<number>(0);
     const [totalstopLoss,setTotalStopLoss]=useState<number>(0);
     const [holding,setHoldingUsd]=useState<number>(0);
+
+    const { connect, connectors } = useConnect();
+    const { disconnect } = useDisconnect();
+    const { address, isConnected, account } = useAccount();
+    const { starknetkitConnectModal } = useStarknetkitConnectModal({
+        connectors: connectors as StarknetkitConnector[]
+    });
     const [profit,setProfit]=useState<string>("0.00"); 
     const {
         userWalletAddress
@@ -50,39 +55,15 @@ export const AutonomousAgentInterface=()=>{
     agentHoldings()
    },[])
 
-    useEffect(()=>{
-        const handleConnect = async () => {
-            try {
-                const selectedWalletSWO = await connect({ modalMode: 'alwaysAsk', modalTheme: 'dark' });
-                
-                if (!selectedWalletSWO || !selectedWalletSWO.id) {
-                    console.error("Wallet not connected");
-                    return;
-                }
-                
-                const myWalletAccount = await WalletAccount.connect(
-                    provider,
-                    selectedWalletSWO
-                );
-                setAccount(myWalletAccount);
-            } catch (error) {
-                console.error("Connection failed:", error);
-                alert("Failed to connect wallet.");
-            }
-        };
-        
-        handleConnect();
-    },[]);
-
     useEffect(() => {
-        if (account) {
-            useAgentStore.getState().setWalletAddress(account.address);
-            console.log("Setting wallet in store:", account.address);
+        if (address) {
+            useAgentStore.getState().setWalletAddress(address);
+            console.log("Setting wallet in store:", address);
         }
-    }, [account]);
+    }, [address]);
 
    const AddFundsToAgent=async()=>{
-       if (!account) {
+       if (!isConnected || !account) {
         alert("Please connect your wallet.");
         return;
        }
@@ -143,12 +124,20 @@ export const AutonomousAgentInterface=()=>{
                 <span>${totalstopLoss}</span>
                 </div>
                 <div className="AgentColumnFunds">
-                <button
-                onClick={AddFundsToAgent}
-                disabled={loading}
-                className="AddFundsButton"
-                >Add Funds
-                </button>
+                {!isConnected ? (
+                    <button
+                        onClick={() => starknetkitConnectModal()}
+                        className="AddFundsButton"
+                    >Connect Wallet
+                    </button>
+                ) : (
+                    <button
+                        onClick={AddFundsToAgent}
+                        disabled={loading}
+                        className="AddFundsButton"
+                    >Add Funds
+                    </button>
+                )}
                 <div className='Input'>
                   <input
                     className='InputField'

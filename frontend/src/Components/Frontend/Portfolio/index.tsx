@@ -73,7 +73,7 @@ const MobileDevice= useMediaQuery("(max-width:600px)");
       }
     };
     fetchPortfolio();
-  }, []);
+  }, [agentWalletAddress]);
 
   if (!portfolio) {
     return <div className='PortfolioLoader'>
