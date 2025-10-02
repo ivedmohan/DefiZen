@@ -4,6 +4,7 @@ import { DepositFunctionStrkFarm,WithDrawFunctionStrkFarm } from './StrkFarm';
 import { ACCOUNT_ADDRESS } from '../constants/contracts';
 import { DEPOSIT_WITHDRAW } from '../Routes/DepositWithdraw';
 import { DepositWithdrawPool } from '../types/defi';
+import logger from '../utils/logger';
 interface Token {
     name: string;
     balance: string;
@@ -67,11 +68,11 @@ interface Token {
     .reduce((sum, token) => sum + Math.abs(token.volatility || 0), 0) / tokens.length;
      
     const riskScore = Math.min(10, Math.round(avgVolatility * 2));
-    console.log("The risk score is",riskScore)
+    logger.info('Risk score calculated', { riskScore });
     const volatilitySum = tokens.reduce((sum, token) => sum + (token.volatility || 0), 0);
-    console.log("The Volatility sum is",volatilitySum)
+    logger.info('Volatility sum calculated', { volatilitySum });
     const marketTrend = volatilitySum < -2 ? 'bearish' : volatilitySum > 2 ? 'bullish' : 'neutral';
-    console.log("The market trend is",marketTrend)
+    logger.info('Market trend determined', { marketTrend });
     
     return {
       stableCoins,
@@ -188,9 +189,9 @@ interface Token {
       }
       
       const marketAnalysis = await analyzeMarketConditions(tokenData);
-      console.log("THe market analysis is",marketAnalysis)
+      logger.info('Market analysis completed', { marketAnalysis });
       const { allocations } = determineOptimalAllocation(tokenData, marketAnalysis);
-      console.log("THe proper allocations are",allocations)
+      logger.info('Optimal allocations determined', { allocationsCount: allocations.length });
       const totalEstimatedProfit = allocations.reduce(
         (sum, allocation) => sum + allocation.estimatedProfit, 0
       );
@@ -205,7 +206,7 @@ interface Token {
       }
       
       const executionResults = await executeDeposits(allocations);
-      console.log("the execution results are",executionResults);
+      logger.info('Execution results received', { resultsCount: executionResults.length });
       return {
         executed: true,
         totalEstimatedProfit,
@@ -262,11 +263,11 @@ interface Token {
         volatility: Math.random() * 10 - 5  // TODO: Get real volatility data
       }));
       
-      console.log(`📊 Fetched ${tokens.length} tokens for agent wallet ${walletAddress}`);
+      logger.info(`Fetched tokens for agent wallet`, { walletAddress, tokensCount: tokens.length });
       return tokens;
       
     } catch (error) {
-      console.error("Error fetching portfolio data:", error);
+      logger.error("Error fetching portfolio data:", error);
       // Fallback to empty array if error
       return [];
     }
@@ -316,7 +317,7 @@ interface Token {
           details: result
         });
 
-        console.log("The final results from strategy are",results)
+        logger.info("Deposit execution completed", { resultsCount: results.length });
       } catch (error) {
         results.push({
           token: token.name,

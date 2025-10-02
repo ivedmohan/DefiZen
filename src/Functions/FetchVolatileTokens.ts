@@ -4,6 +4,7 @@ import axios from "axios";
 import { SingularSwapExecution } from "./SwapFunction";
 import {  Contract } from "starknet";
 import { provider } from "../utils/defiUtils";
+import logger from "../utils/logger";
 
 
 export const FetchVolatileTokens=async ()=>{
@@ -22,7 +23,7 @@ export const FetchVolatileTokens=async ()=>{
           throw new Error(`DeFiLlama API error: ${response.status} ${response.statusText}`);
         }      
         const data = response.data;
-        console.log(data.coins)
+        logger.info('Fetched volatile tokens data:', { coinsCount: Object.keys(data.coins).length });
         const finalData = supportedTokens.map((item: Token) => {
             const tokenKey = `starknet:${item.token_address}`;
             const volatilityData = data.coins[tokenKey];
@@ -32,12 +33,12 @@ export const FetchVolatileTokens=async ()=>{
               volatility: volatilityData || 0,
             };
         });
-        console.log(finalData)
+        logger.info('Processed volatile tokens:', { tokensCount: finalData.length });
         return {
             volatileTokensData:finalData
         }
     }catch(err){
-        console.log("Error fetching the volatile tokens",err)
+        logger.error("Error fetching the volatile tokens", err)
     }
 }
 
@@ -46,7 +47,7 @@ export const FetchVolatileTokens=async ()=>{
 export const SwapVolatileAssets=async (userAddress:string)=>{
   try{
     const data=await FetchVolatileTokens();
-    console.log(data?.volatileTokensData)
+    logger.info('SwapVolatileAssets - received data:', { hasData: !!data, tokensCount: data?.volatileTokensData?.length })
     const stablecoinAddress="0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8";
     const fallingTokens=data?.volatileTokensData.filter((item)=>item.volatility < -5).map((item)=>{
       return {

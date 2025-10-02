@@ -1,4 +1,5 @@
 import { prisma } from "../db";
+import logger from "../utils/logger";
 interface TradeInput {
     agentWallet: string;
     amount: number; 
@@ -32,7 +33,7 @@ export const saveTransactionByAgent= async (input:TradeInput)=>{
         message:`Saved the transaction with hash ${result.txHash}`
       }
     }catch(err){
-        console.log("Error saving the transaction by agent",err);
+        logger.error("Error saving the transaction by agent", err);
     }
 }
 
@@ -78,7 +79,7 @@ export const MakeDepositToAgent=async (input:Deposit)=>{
             data: result
         }
     }catch(err){
-        console.log("Error depositing funds to agent Wallet",err)
+        logger.error("Error depositing funds to agent Wallet", err);
         return {
             message:"Error depositing in the wallet",
             success:false,
@@ -103,7 +104,7 @@ export const fetchTransactionByAgent=async (agentWalletAddress:string)=>{
         message:result
     }
     }catch(err){
-        console.log("Error fetching the transactions by the agent")
+        logger.error("Error fetching the transactions by the agent", err);
         return {
             message:"Error Fetching any transactions by the agent"
         }

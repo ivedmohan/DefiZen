@@ -268,13 +268,14 @@ export const DepositFunctionStrkFarm = async (tokenName:string, amount:string,ac
         console.log("📋 Transaction calls:", calls.length, "operations");
         
         try {
-            // Estimate fee first
-            const feeEstimate = await account.estimateFee(calls);
+            // Estimate fee first with v3 transaction
+            const feeEstimate = await account.estimateFee(calls, { version: 3 });
             console.log("💰 Estimated fee:", feeEstimate.overall_fee.toString(), "wei");
             
-            // Execute with proper fee
+            // Execute with proper fee and v3 transaction version
             const tx = await account.execute(calls, undefined, {
-                maxFee: (BigInt(feeEstimate.overall_fee.toString()) * BigInt(150)) / BigInt(100) // 50% buffer
+                maxFee: (BigInt(feeEstimate.overall_fee.toString()) * BigInt(150)) / BigInt(100), // 50% buffer
+                version: 3 // Explicitly use v3 transactions (current StarkNet standard)
             });
           
             console.log("✅ StrkFarm Deposit Transaction Hash:", tx.transaction_hash);
