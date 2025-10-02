@@ -352,7 +352,9 @@ export async function getTokenPrice(
 ): Promise<number> {
 	try {
 		console.log("The token address is:",tokenAddress)
-		const { data } = await axios.get(`https://starknet.impulse.avnu.fi/v1/tokens/${tokenAddress}/prices/line`);
+		const { data } = await axios.get(`https://starknet.impulse.avnu.fi/v1/tokens/${tokenAddress}/prices/line`, {
+			timeout: 10000 // 10 second timeout
+		});
 		const currentPrice = data[data.length - 1]?.value;
 		console.log("the current price is",currentPrice);
 		if (!currentPrice) {
@@ -360,6 +362,7 @@ export async function getTokenPrice(
 		}
 		return currentPrice;
 	} catch (error) {
+		console.error(`Error fetching price for ${tokenAddress}:`, error);
 		if (axios.isAxiosError(error)) {
 			throw new Error(`Failed to fetch price for token ${tokenAddress}: ${error.message}`);
 		}
@@ -384,7 +387,7 @@ export async function getStakedAssetPrice(
 			provider
 		);
 
-		const indexResult = await stakingContract.call("token_index", [] as const);
+		const indexResult = await stakingContract.call("token_index", []);
 		const conversionIndex = Number(indexResult) / (10 ** decimals);
 
 		// Calculate the staked token price by multiplying underlying price with the conversion index
@@ -409,8 +412,8 @@ export async function getLPTokenPrice(
 
 		// Get pool data
 		const [reservesResult, totalSupplyResult] = await Promise.all([
-			poolContract.call("get_reserves", [] as const),
-			poolContract.call("total_supply", [] as const)
+			poolContract.call("get_reserves", []),
+			poolContract.call("total_supply", [])
 		]) as [{ reserve0: [string, string]; reserve1: [string, string] }, { supply: [string, string] }];
 
 		// Reconstruct reserves and total supply

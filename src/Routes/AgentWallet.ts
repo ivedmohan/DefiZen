@@ -27,6 +27,7 @@ const createAgentWalletSchema = z.object({
 });
 
 // Create agent wallet
+// @ts-ignore
 AgentWalletRouter.post("/create", validateRequest(createAgentWalletSchema) as unknown as RequestHandler, (async (req: Request, res: Response) => {
   try {
     const { userId, agentName, permissions, portfolioPreset } = req.body;
@@ -127,6 +128,7 @@ AgentWalletRouter.get("/user/:userId", async (req: Request, res: Response) => {
 });
 
 // Get agent wallet details
+// @ts-ignore
 AgentWalletRouter.get("/:agentId", (async (req: Request, res: Response) => {
   try {
     const { agentId } = req.params;

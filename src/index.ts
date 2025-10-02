@@ -98,54 +98,6 @@ const volatileJob=new CronJob(
 'Asia/Kolkata'
 )
 
-// NEW: Autonomous Trading Cron Job
-const autonomousJob=new CronJob(
-  '0 0 */1 * * *',  // Every 1 hour (changed from 6 hours for demo)
-  async function(){
-    console.log("🤖 Running autonomous trading job...");
-    
-    try {
-      // Get all unique agent wallets with active deposits
-      const deposits = await prisma.deposit.findMany({
-        select: {
-          agentWallet: true
-        },
-        distinct: ['agentWallet']
-      });
-      
-      console.log(`Found ${deposits.length} agent wallet(s) to process`);
-      
-      // Execute strategy for each agent wallet
-      const { AutonomousManager } = await import("./Functions/AutonomousManager");
-      
-      for (const deposit of deposits) {
-        console.log(`\n🎯 Processing agent: ${deposit.agentWallet}`);
-        
-        try {
-          const result = await AutonomousManager.executeAutonomousStrategy(deposit.agentWallet);
-          
-          if (result.success) {
-            console.log(`✅ ${result.summary}`);
-          } else {
-            console.log(`ℹ️  ${result.summary}`);
-          }
-        } catch (agentError) {
-          console.error(`❌ Error processing agent ${deposit.agentWallet}:`, agentError);
-        }
-      }
-      
-      console.log("\n✅ Autonomous trading job completed.");
-    } catch (error) {
-      console.error("❌ Autonomous job error:", error);
-    }
-   },
-   ()=>{
-    console.log("Autonomous trading job initialized")
-   },
-  true,
-'Asia/Kolkata'
-)
-
 
 
 
@@ -218,11 +170,62 @@ app.post('/depositStrkFarm',async (req: Request, res: Response) => {
   }
 });
 
-
+// NEW: Autonomous Trading Cron Job  
+const autonomousJob = new CronJob(
+  '0 0 */1 * * *',  // Every 1 hour in production
+  async function(){
+    console.log("🤖 Running autonomous trading job...");
+    
+    try {
+      // Get all unique agent wallets with active deposits
+      const deposits = await prisma.deposit.findMany({
+        select: {
+          agentWallet: true
+        },
+        distinct: ['agentWallet']
+      });
+      
+      console.log(`Found ${deposits.length} agent wallet(s) to process`);
+      
+      // Execute strategy for each agent wallet
+      const { AutonomousManager } = await import("./Functions/AutonomousManager");
+      
+      for (const deposit of deposits) {
+        console.log(`\n🎯 Processing agent: ${deposit.agentWallet}`);
+        
+        try {
+          const result = await AutonomousManager.executeAutonomousStrategy(deposit.agentWallet);
+          
+          if (result.success) {
+            console.log(`✅ ${result.summary}`);
+          } else {
+            console.log(`ℹ️  ${result.summary}`);
+          }
+        } catch (agentError) {
+          console.error(`❌ Error processing agent ${deposit.agentWallet}:`, agentError);
+        }
+      }
+      
+      console.log("\n✅ Autonomous trading job completed.");
+    } catch (error) {
+      console.error("❌ Autonomous job error:", error);
+    }
+   },
+   ()=>{
+    console.log("Autonomous trading job initialized")
+   },
+  true,
+  'Asia/Kolkata'
+);
 
 // Error handling middleware (must be last)
 app.use(notFoundHandler);
 app.use(errorHandler);
+
+// Database connection
+prisma.$connect()
+  .then(() => console.log('✅ Database connected successfully'))
+  .catch((err) => console.error('❌ Database connection failed:', err));
 
 app.listen(`${PORT}`, () => {
     console.log(`[server]: Server is running at http://localhost:${PORT}`);

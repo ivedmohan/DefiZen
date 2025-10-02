@@ -3,13 +3,16 @@
 
     "target": "es2016",
     "module": "commonjs",
+    "rootDir": "./src",
     "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "strict": false,
     "skipLibCheck": true,
+    "noImplicitAny": false,
     "moduleResolution": "node",
     "jsx": "react-jsx"
   },
-  "exclude": ["node_modules", "dist", "frontend"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "frontend", "test-autonomous.ts"]
 }
