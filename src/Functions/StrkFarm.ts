@@ -230,12 +230,9 @@ export const DepositFunctionStrkFarm = async (tokenName:string, amount:string,ac
         const userBalance = await tokenContract.call("balanceOf", [accountAddress]);
         console.log(`💰 User ${tokenName} balance:`, userBalance.toString());
         
-        // Check max deposit limit
-        const maxDeposit = await contract.call("max_deposit", [accountAddress]);
-        console.log("📊 Max deposit allowed:", maxDeposit.toString());
-        
+        // Use deposit amount directly (max_deposit check removed due to ABI limitation)
         const depositAmount = BigInt(Number(amount) * 10 ** 18);
-        const finalAmount = Number(depositAmount) > Number(maxDeposit) ? maxDeposit : depositAmount;
+        const finalAmount = depositAmount;
         
         // Validate user has enough tokens
         if (BigInt(userBalance.toString()) < BigInt(finalAmount.toString())) {
