@@ -53,6 +53,11 @@ export type AgentWallet = $Result.DefaultSelection<Prisma.$AgentWalletPayload>
  * 
  */
 export type Trade = $Result.DefaultSelection<Prisma.$TradePayload>
+/**
+ * Model YieldPosition
+ * 
+ */
+export type YieldPosition = $Result.DefaultSelection<Prisma.$YieldPositionPayload>
 
 /**
  * Enums
@@ -275,6 +280,16 @@ export class PrismaClient<
     * ```
     */
   get trade(): Prisma.TradeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.yieldPosition`: Exposes CRUD operations for the **YieldPosition** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more YieldPositions
+    * const yieldPositions = await prisma.yieldPosition.findMany()
+    * ```
+    */
+  get yieldPosition(): Prisma.YieldPositionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -722,7 +737,8 @@ export namespace Prisma {
     Agent: 'Agent',
     Deposit: 'Deposit',
     AgentWallet: 'AgentWallet',
-    Trade: 'Trade'
+    Trade: 'Trade',
+    YieldPosition: 'YieldPosition'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -741,7 +757,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "userPortfolioPreference" | "user" | "userContact" | "token" | "agent" | "deposit" | "agentWallet" | "trade"
+      modelProps: "userPortfolioPreference" | "user" | "userContact" | "token" | "agent" | "deposit" | "agentWallet" | "trade" | "yieldPosition"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1337,6 +1353,80 @@ export namespace Prisma {
           }
         }
       }
+      YieldPosition: {
+        payload: Prisma.$YieldPositionPayload<ExtArgs>
+        fields: Prisma.YieldPositionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.YieldPositionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$YieldPositionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.YieldPositionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$YieldPositionPayload>
+          }
+          findFirst: {
+            args: Prisma.YieldPositionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$YieldPositionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.YieldPositionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$YieldPositionPayload>
+          }
+          findMany: {
+            args: Prisma.YieldPositionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$YieldPositionPayload>[]
+          }
+          create: {
+            args: Prisma.YieldPositionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$YieldPositionPayload>
+          }
+          createMany: {
+            args: Prisma.YieldPositionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.YieldPositionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$YieldPositionPayload>[]
+          }
+          delete: {
+            args: Prisma.YieldPositionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$YieldPositionPayload>
+          }
+          update: {
+            args: Prisma.YieldPositionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$YieldPositionPayload>
+          }
+          deleteMany: {
+            args: Prisma.YieldPositionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.YieldPositionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.YieldPositionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$YieldPositionPayload>[]
+          }
+          upsert: {
+            args: Prisma.YieldPositionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$YieldPositionPayload>
+          }
+          aggregate: {
+            args: Prisma.YieldPositionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateYieldPosition>
+          }
+          groupBy: {
+            args: Prisma.YieldPositionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<YieldPositionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.YieldPositionCountArgs<ExtArgs>
+            result: $Utils.Optional<YieldPositionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1429,6 +1519,7 @@ export namespace Prisma {
     deposit?: DepositOmit
     agentWallet?: AgentWalletOmit
     trade?: TradeOmit
+    yieldPosition?: YieldPositionOmit
   }
 
   /* Types for Logging */
@@ -10293,6 +10384,1105 @@ export namespace Prisma {
 
 
   /**
+   * Model YieldPosition
+   */
+
+  export type AggregateYieldPosition = {
+    _count: YieldPositionCountAggregateOutputType | null
+    _min: YieldPositionMinAggregateOutputType | null
+    _max: YieldPositionMaxAggregateOutputType | null
+  }
+
+  export type YieldPositionMinAggregateOutputType = {
+    id: string | null
+    agentWallet: string | null
+    protocol: string | null
+    tokenName: string | null
+    poolName: string | null
+    depositedAmount: string | null
+    currentAmount: string | null
+    apy: string | null
+    txHash: string | null
+    status: string | null
+    depositedAt: Date | null
+    withdrawnAt: Date | null
+    lastUpdated: Date | null
+  }
+
+  export type YieldPositionMaxAggregateOutputType = {
+    id: string | null
+    agentWallet: string | null
+    protocol: string | null
+    tokenName: string | null
+    poolName: string | null
+    depositedAmount: string | null
+    currentAmount: string | null
+    apy: string | null
+    txHash: string | null
+    status: string | null
+    depositedAt: Date | null
+    withdrawnAt: Date | null
+    lastUpdated: Date | null
+  }
+
+  export type YieldPositionCountAggregateOutputType = {
+    id: number
+    agentWallet: number
+    protocol: number
+    tokenName: number
+    poolName: number
+    depositedAmount: number
+    currentAmount: number
+    apy: number
+    txHash: number
+    status: number
+    depositedAt: number
+    withdrawnAt: number
+    lastUpdated: number
+    _all: number
+  }
+
+
+  export type YieldPositionMinAggregateInputType = {
+    id?: true
+    agentWallet?: true
+    protocol?: true
+    tokenName?: true
+    poolName?: true
+    depositedAmount?: true
+    currentAmount?: true
+    apy?: true
+    txHash?: true
+    status?: true
+    depositedAt?: true
+    withdrawnAt?: true
+    lastUpdated?: true
+  }
+
+  export type YieldPositionMaxAggregateInputType = {
+    id?: true
+    agentWallet?: true
+    protocol?: true
+    tokenName?: true
+    poolName?: true
+    depositedAmount?: true
+    currentAmount?: true
+    apy?: true
+    txHash?: true
+    status?: true
+    depositedAt?: true
+    withdrawnAt?: true
+    lastUpdated?: true
+  }
+
+  export type YieldPositionCountAggregateInputType = {
+    id?: true
+    agentWallet?: true
+    protocol?: true
+    tokenName?: true
+    poolName?: true
+    depositedAmount?: true
+    currentAmount?: true
+    apy?: true
+    txHash?: true
+    status?: true
+    depositedAt?: true
+    withdrawnAt?: true
+    lastUpdated?: true
+    _all?: true
+  }
+
+  export type YieldPositionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which YieldPosition to aggregate.
+     */
+    where?: YieldPositionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of YieldPositions to fetch.
+     */
+    orderBy?: YieldPositionOrderByWithRelationInput | YieldPositionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: YieldPositionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` YieldPositions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` YieldPositions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned YieldPositions
+    **/
+    _count?: true | YieldPositionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: YieldPositionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: YieldPositionMaxAggregateInputType
+  }
+
+  export type GetYieldPositionAggregateType<T extends YieldPositionAggregateArgs> = {
+        [P in keyof T & keyof AggregateYieldPosition]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateYieldPosition[P]>
+      : GetScalarType<T[P], AggregateYieldPosition[P]>
+  }
+
+
+
+
+  export type YieldPositionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: YieldPositionWhereInput
+    orderBy?: YieldPositionOrderByWithAggregationInput | YieldPositionOrderByWithAggregationInput[]
+    by: YieldPositionScalarFieldEnum[] | YieldPositionScalarFieldEnum
+    having?: YieldPositionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: YieldPositionCountAggregateInputType | true
+    _min?: YieldPositionMinAggregateInputType
+    _max?: YieldPositionMaxAggregateInputType
+  }
+
+  export type YieldPositionGroupByOutputType = {
+    id: string
+    agentWallet: string
+    protocol: string
+    tokenName: string
+    poolName: string
+    depositedAmount: string
+    currentAmount: string | null
+    apy: string
+    txHash: string
+    status: string
+    depositedAt: Date
+    withdrawnAt: Date | null
+    lastUpdated: Date
+    _count: YieldPositionCountAggregateOutputType | null
+    _min: YieldPositionMinAggregateOutputType | null
+    _max: YieldPositionMaxAggregateOutputType | null
+  }
+
+  type GetYieldPositionGroupByPayload<T extends YieldPositionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<YieldPositionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof YieldPositionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], YieldPositionGroupByOutputType[P]>
+            : GetScalarType<T[P], YieldPositionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type YieldPositionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agentWallet?: boolean
+    protocol?: boolean
+    tokenName?: boolean
+    poolName?: boolean
+    depositedAmount?: boolean
+    currentAmount?: boolean
+    apy?: boolean
+    txHash?: boolean
+    status?: boolean
+    depositedAt?: boolean
+    withdrawnAt?: boolean
+    lastUpdated?: boolean
+  }, ExtArgs["result"]["yieldPosition"]>
+
+  export type YieldPositionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agentWallet?: boolean
+    protocol?: boolean
+    tokenName?: boolean
+    poolName?: boolean
+    depositedAmount?: boolean
+    currentAmount?: boolean
+    apy?: boolean
+    txHash?: boolean
+    status?: boolean
+    depositedAt?: boolean
+    withdrawnAt?: boolean
+    lastUpdated?: boolean
+  }, ExtArgs["result"]["yieldPosition"]>
+
+  export type YieldPositionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agentWallet?: boolean
+    protocol?: boolean
+    tokenName?: boolean
+    poolName?: boolean
+    depositedAmount?: boolean
+    currentAmount?: boolean
+    apy?: boolean
+    txHash?: boolean
+    status?: boolean
+    depositedAt?: boolean
+    withdrawnAt?: boolean
+    lastUpdated?: boolean
+  }, ExtArgs["result"]["yieldPosition"]>
+
+  export type YieldPositionSelectScalar = {
+    id?: boolean
+    agentWallet?: boolean
+    protocol?: boolean
+    tokenName?: boolean
+    poolName?: boolean
+    depositedAmount?: boolean
+    currentAmount?: boolean
+    apy?: boolean
+    txHash?: boolean
+    status?: boolean
+    depositedAt?: boolean
+    withdrawnAt?: boolean
+    lastUpdated?: boolean
+  }
+
+  export type YieldPositionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "agentWallet" | "protocol" | "tokenName" | "poolName" | "depositedAmount" | "currentAmount" | "apy" | "txHash" | "status" | "depositedAt" | "withdrawnAt" | "lastUpdated", ExtArgs["result"]["yieldPosition"]>
+
+  export type $YieldPositionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "YieldPosition"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      agentWallet: string
+      protocol: string
+      tokenName: string
+      poolName: string
+      depositedAmount: string
+      currentAmount: string | null
+      apy: string
+      txHash: string
+      status: string
+      depositedAt: Date
+      withdrawnAt: Date | null
+      lastUpdated: Date
+    }, ExtArgs["result"]["yieldPosition"]>
+    composites: {}
+  }
+
+  type YieldPositionGetPayload<S extends boolean | null | undefined | YieldPositionDefaultArgs> = $Result.GetResult<Prisma.$YieldPositionPayload, S>
+
+  type YieldPositionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<YieldPositionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: YieldPositionCountAggregateInputType | true
+    }
+
+  export interface YieldPositionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['YieldPosition'], meta: { name: 'YieldPosition' } }
+    /**
+     * Find zero or one YieldPosition that matches the filter.
+     * @param {YieldPositionFindUniqueArgs} args - Arguments to find a YieldPosition
+     * @example
+     * // Get one YieldPosition
+     * const yieldPosition = await prisma.yieldPosition.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends YieldPositionFindUniqueArgs>(args: SelectSubset<T, YieldPositionFindUniqueArgs<ExtArgs>>): Prisma__YieldPositionClient<$Result.GetResult<Prisma.$YieldPositionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one YieldPosition that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {YieldPositionFindUniqueOrThrowArgs} args - Arguments to find a YieldPosition
+     * @example
+     * // Get one YieldPosition
+     * const yieldPosition = await prisma.yieldPosition.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends YieldPositionFindUniqueOrThrowArgs>(args: SelectSubset<T, YieldPositionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__YieldPositionClient<$Result.GetResult<Prisma.$YieldPositionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first YieldPosition that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {YieldPositionFindFirstArgs} args - Arguments to find a YieldPosition
+     * @example
+     * // Get one YieldPosition
+     * const yieldPosition = await prisma.yieldPosition.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends YieldPositionFindFirstArgs>(args?: SelectSubset<T, YieldPositionFindFirstArgs<ExtArgs>>): Prisma__YieldPositionClient<$Result.GetResult<Prisma.$YieldPositionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first YieldPosition that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {YieldPositionFindFirstOrThrowArgs} args - Arguments to find a YieldPosition
+     * @example
+     * // Get one YieldPosition
+     * const yieldPosition = await prisma.yieldPosition.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends YieldPositionFindFirstOrThrowArgs>(args?: SelectSubset<T, YieldPositionFindFirstOrThrowArgs<ExtArgs>>): Prisma__YieldPositionClient<$Result.GetResult<Prisma.$YieldPositionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more YieldPositions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {YieldPositionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all YieldPositions
+     * const yieldPositions = await prisma.yieldPosition.findMany()
+     * 
+     * // Get first 10 YieldPositions
+     * const yieldPositions = await prisma.yieldPosition.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const yieldPositionWithIdOnly = await prisma.yieldPosition.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends YieldPositionFindManyArgs>(args?: SelectSubset<T, YieldPositionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$YieldPositionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a YieldPosition.
+     * @param {YieldPositionCreateArgs} args - Arguments to create a YieldPosition.
+     * @example
+     * // Create one YieldPosition
+     * const YieldPosition = await prisma.yieldPosition.create({
+     *   data: {
+     *     // ... data to create a YieldPosition
+     *   }
+     * })
+     * 
+     */
+    create<T extends YieldPositionCreateArgs>(args: SelectSubset<T, YieldPositionCreateArgs<ExtArgs>>): Prisma__YieldPositionClient<$Result.GetResult<Prisma.$YieldPositionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many YieldPositions.
+     * @param {YieldPositionCreateManyArgs} args - Arguments to create many YieldPositions.
+     * @example
+     * // Create many YieldPositions
+     * const yieldPosition = await prisma.yieldPosition.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends YieldPositionCreateManyArgs>(args?: SelectSubset<T, YieldPositionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many YieldPositions and returns the data saved in the database.
+     * @param {YieldPositionCreateManyAndReturnArgs} args - Arguments to create many YieldPositions.
+     * @example
+     * // Create many YieldPositions
+     * const yieldPosition = await prisma.yieldPosition.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many YieldPositions and only return the `id`
+     * const yieldPositionWithIdOnly = await prisma.yieldPosition.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends YieldPositionCreateManyAndReturnArgs>(args?: SelectSubset<T, YieldPositionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$YieldPositionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a YieldPosition.
+     * @param {YieldPositionDeleteArgs} args - Arguments to delete one YieldPosition.
+     * @example
+     * // Delete one YieldPosition
+     * const YieldPosition = await prisma.yieldPosition.delete({
+     *   where: {
+     *     // ... filter to delete one YieldPosition
+     *   }
+     * })
+     * 
+     */
+    delete<T extends YieldPositionDeleteArgs>(args: SelectSubset<T, YieldPositionDeleteArgs<ExtArgs>>): Prisma__YieldPositionClient<$Result.GetResult<Prisma.$YieldPositionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one YieldPosition.
+     * @param {YieldPositionUpdateArgs} args - Arguments to update one YieldPosition.
+     * @example
+     * // Update one YieldPosition
+     * const yieldPosition = await prisma.yieldPosition.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends YieldPositionUpdateArgs>(args: SelectSubset<T, YieldPositionUpdateArgs<ExtArgs>>): Prisma__YieldPositionClient<$Result.GetResult<Prisma.$YieldPositionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more YieldPositions.
+     * @param {YieldPositionDeleteManyArgs} args - Arguments to filter YieldPositions to delete.
+     * @example
+     * // Delete a few YieldPositions
+     * const { count } = await prisma.yieldPosition.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends YieldPositionDeleteManyArgs>(args?: SelectSubset<T, YieldPositionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more YieldPositions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {YieldPositionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many YieldPositions
+     * const yieldPosition = await prisma.yieldPosition.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends YieldPositionUpdateManyArgs>(args: SelectSubset<T, YieldPositionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more YieldPositions and returns the data updated in the database.
+     * @param {YieldPositionUpdateManyAndReturnArgs} args - Arguments to update many YieldPositions.
+     * @example
+     * // Update many YieldPositions
+     * const yieldPosition = await prisma.yieldPosition.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more YieldPositions and only return the `id`
+     * const yieldPositionWithIdOnly = await prisma.yieldPosition.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends YieldPositionUpdateManyAndReturnArgs>(args: SelectSubset<T, YieldPositionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$YieldPositionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one YieldPosition.
+     * @param {YieldPositionUpsertArgs} args - Arguments to update or create a YieldPosition.
+     * @example
+     * // Update or create a YieldPosition
+     * const yieldPosition = await prisma.yieldPosition.upsert({
+     *   create: {
+     *     // ... data to create a YieldPosition
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the YieldPosition we want to update
+     *   }
+     * })
+     */
+    upsert<T extends YieldPositionUpsertArgs>(args: SelectSubset<T, YieldPositionUpsertArgs<ExtArgs>>): Prisma__YieldPositionClient<$Result.GetResult<Prisma.$YieldPositionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of YieldPositions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {YieldPositionCountArgs} args - Arguments to filter YieldPositions to count.
+     * @example
+     * // Count the number of YieldPositions
+     * const count = await prisma.yieldPosition.count({
+     *   where: {
+     *     // ... the filter for the YieldPositions we want to count
+     *   }
+     * })
+    **/
+    count<T extends YieldPositionCountArgs>(
+      args?: Subset<T, YieldPositionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], YieldPositionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a YieldPosition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {YieldPositionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends YieldPositionAggregateArgs>(args: Subset<T, YieldPositionAggregateArgs>): Prisma.PrismaPromise<GetYieldPositionAggregateType<T>>
+
+    /**
+     * Group by YieldPosition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {YieldPositionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends YieldPositionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: YieldPositionGroupByArgs['orderBy'] }
+        : { orderBy?: YieldPositionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, YieldPositionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetYieldPositionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the YieldPosition model
+   */
+  readonly fields: YieldPositionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for YieldPosition.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__YieldPositionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the YieldPosition model
+   */
+  interface YieldPositionFieldRefs {
+    readonly id: FieldRef<"YieldPosition", 'String'>
+    readonly agentWallet: FieldRef<"YieldPosition", 'String'>
+    readonly protocol: FieldRef<"YieldPosition", 'String'>
+    readonly tokenName: FieldRef<"YieldPosition", 'String'>
+    readonly poolName: FieldRef<"YieldPosition", 'String'>
+    readonly depositedAmount: FieldRef<"YieldPosition", 'String'>
+    readonly currentAmount: FieldRef<"YieldPosition", 'String'>
+    readonly apy: FieldRef<"YieldPosition", 'String'>
+    readonly txHash: FieldRef<"YieldPosition", 'String'>
+    readonly status: FieldRef<"YieldPosition", 'String'>
+    readonly depositedAt: FieldRef<"YieldPosition", 'DateTime'>
+    readonly withdrawnAt: FieldRef<"YieldPosition", 'DateTime'>
+    readonly lastUpdated: FieldRef<"YieldPosition", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * YieldPosition findUnique
+   */
+  export type YieldPositionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+    /**
+     * Filter, which YieldPosition to fetch.
+     */
+    where: YieldPositionWhereUniqueInput
+  }
+
+  /**
+   * YieldPosition findUniqueOrThrow
+   */
+  export type YieldPositionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+    /**
+     * Filter, which YieldPosition to fetch.
+     */
+    where: YieldPositionWhereUniqueInput
+  }
+
+  /**
+   * YieldPosition findFirst
+   */
+  export type YieldPositionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+    /**
+     * Filter, which YieldPosition to fetch.
+     */
+    where?: YieldPositionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of YieldPositions to fetch.
+     */
+    orderBy?: YieldPositionOrderByWithRelationInput | YieldPositionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for YieldPositions.
+     */
+    cursor?: YieldPositionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` YieldPositions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` YieldPositions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of YieldPositions.
+     */
+    distinct?: YieldPositionScalarFieldEnum | YieldPositionScalarFieldEnum[]
+  }
+
+  /**
+   * YieldPosition findFirstOrThrow
+   */
+  export type YieldPositionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+    /**
+     * Filter, which YieldPosition to fetch.
+     */
+    where?: YieldPositionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of YieldPositions to fetch.
+     */
+    orderBy?: YieldPositionOrderByWithRelationInput | YieldPositionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for YieldPositions.
+     */
+    cursor?: YieldPositionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` YieldPositions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` YieldPositions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of YieldPositions.
+     */
+    distinct?: YieldPositionScalarFieldEnum | YieldPositionScalarFieldEnum[]
+  }
+
+  /**
+   * YieldPosition findMany
+   */
+  export type YieldPositionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+    /**
+     * Filter, which YieldPositions to fetch.
+     */
+    where?: YieldPositionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of YieldPositions to fetch.
+     */
+    orderBy?: YieldPositionOrderByWithRelationInput | YieldPositionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing YieldPositions.
+     */
+    cursor?: YieldPositionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` YieldPositions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` YieldPositions.
+     */
+    skip?: number
+    distinct?: YieldPositionScalarFieldEnum | YieldPositionScalarFieldEnum[]
+  }
+
+  /**
+   * YieldPosition create
+   */
+  export type YieldPositionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a YieldPosition.
+     */
+    data: XOR<YieldPositionCreateInput, YieldPositionUncheckedCreateInput>
+  }
+
+  /**
+   * YieldPosition createMany
+   */
+  export type YieldPositionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many YieldPositions.
+     */
+    data: YieldPositionCreateManyInput | YieldPositionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * YieldPosition createManyAndReturn
+   */
+  export type YieldPositionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+    /**
+     * The data used to create many YieldPositions.
+     */
+    data: YieldPositionCreateManyInput | YieldPositionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * YieldPosition update
+   */
+  export type YieldPositionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a YieldPosition.
+     */
+    data: XOR<YieldPositionUpdateInput, YieldPositionUncheckedUpdateInput>
+    /**
+     * Choose, which YieldPosition to update.
+     */
+    where: YieldPositionWhereUniqueInput
+  }
+
+  /**
+   * YieldPosition updateMany
+   */
+  export type YieldPositionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update YieldPositions.
+     */
+    data: XOR<YieldPositionUpdateManyMutationInput, YieldPositionUncheckedUpdateManyInput>
+    /**
+     * Filter which YieldPositions to update
+     */
+    where?: YieldPositionWhereInput
+    /**
+     * Limit how many YieldPositions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * YieldPosition updateManyAndReturn
+   */
+  export type YieldPositionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+    /**
+     * The data used to update YieldPositions.
+     */
+    data: XOR<YieldPositionUpdateManyMutationInput, YieldPositionUncheckedUpdateManyInput>
+    /**
+     * Filter which YieldPositions to update
+     */
+    where?: YieldPositionWhereInput
+    /**
+     * Limit how many YieldPositions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * YieldPosition upsert
+   */
+  export type YieldPositionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the YieldPosition to update in case it exists.
+     */
+    where: YieldPositionWhereUniqueInput
+    /**
+     * In case the YieldPosition found by the `where` argument doesn't exist, create a new YieldPosition with this data.
+     */
+    create: XOR<YieldPositionCreateInput, YieldPositionUncheckedCreateInput>
+    /**
+     * In case the YieldPosition was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<YieldPositionUpdateInput, YieldPositionUncheckedUpdateInput>
+  }
+
+  /**
+   * YieldPosition delete
+   */
+  export type YieldPositionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+    /**
+     * Filter which YieldPosition to delete.
+     */
+    where: YieldPositionWhereUniqueInput
+  }
+
+  /**
+   * YieldPosition deleteMany
+   */
+  export type YieldPositionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which YieldPositions to delete
+     */
+    where?: YieldPositionWhereInput
+    /**
+     * Limit how many YieldPositions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * YieldPosition without action
+   */
+  export type YieldPositionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the YieldPosition
+     */
+    select?: YieldPositionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the YieldPosition
+     */
+    omit?: YieldPositionOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10399,6 +11589,25 @@ export namespace Prisma {
   };
 
   export type TradeScalarFieldEnum = (typeof TradeScalarFieldEnum)[keyof typeof TradeScalarFieldEnum]
+
+
+  export const YieldPositionScalarFieldEnum: {
+    id: 'id',
+    agentWallet: 'agentWallet',
+    protocol: 'protocol',
+    tokenName: 'tokenName',
+    poolName: 'poolName',
+    depositedAmount: 'depositedAmount',
+    currentAmount: 'currentAmount',
+    apy: 'apy',
+    txHash: 'txHash',
+    status: 'status',
+    depositedAt: 'depositedAt',
+    withdrawnAt: 'withdrawnAt',
+    lastUpdated: 'lastUpdated'
+  };
+
+  export type YieldPositionScalarFieldEnum = (typeof YieldPositionScalarFieldEnum)[keyof typeof YieldPositionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -11027,6 +12236,98 @@ export namespace Prisma {
     executedAt?: DateTimeWithAggregatesFilter<"Trade"> | Date | string
   }
 
+  export type YieldPositionWhereInput = {
+    AND?: YieldPositionWhereInput | YieldPositionWhereInput[]
+    OR?: YieldPositionWhereInput[]
+    NOT?: YieldPositionWhereInput | YieldPositionWhereInput[]
+    id?: StringFilter<"YieldPosition"> | string
+    agentWallet?: StringFilter<"YieldPosition"> | string
+    protocol?: StringFilter<"YieldPosition"> | string
+    tokenName?: StringFilter<"YieldPosition"> | string
+    poolName?: StringFilter<"YieldPosition"> | string
+    depositedAmount?: StringFilter<"YieldPosition"> | string
+    currentAmount?: StringNullableFilter<"YieldPosition"> | string | null
+    apy?: StringFilter<"YieldPosition"> | string
+    txHash?: StringFilter<"YieldPosition"> | string
+    status?: StringFilter<"YieldPosition"> | string
+    depositedAt?: DateTimeFilter<"YieldPosition"> | Date | string
+    withdrawnAt?: DateTimeNullableFilter<"YieldPosition"> | Date | string | null
+    lastUpdated?: DateTimeFilter<"YieldPosition"> | Date | string
+  }
+
+  export type YieldPositionOrderByWithRelationInput = {
+    id?: SortOrder
+    agentWallet?: SortOrder
+    protocol?: SortOrder
+    tokenName?: SortOrder
+    poolName?: SortOrder
+    depositedAmount?: SortOrder
+    currentAmount?: SortOrderInput | SortOrder
+    apy?: SortOrder
+    txHash?: SortOrder
+    status?: SortOrder
+    depositedAt?: SortOrder
+    withdrawnAt?: SortOrderInput | SortOrder
+    lastUpdated?: SortOrder
+  }
+
+  export type YieldPositionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: YieldPositionWhereInput | YieldPositionWhereInput[]
+    OR?: YieldPositionWhereInput[]
+    NOT?: YieldPositionWhereInput | YieldPositionWhereInput[]
+    agentWallet?: StringFilter<"YieldPosition"> | string
+    protocol?: StringFilter<"YieldPosition"> | string
+    tokenName?: StringFilter<"YieldPosition"> | string
+    poolName?: StringFilter<"YieldPosition"> | string
+    depositedAmount?: StringFilter<"YieldPosition"> | string
+    currentAmount?: StringNullableFilter<"YieldPosition"> | string | null
+    apy?: StringFilter<"YieldPosition"> | string
+    txHash?: StringFilter<"YieldPosition"> | string
+    status?: StringFilter<"YieldPosition"> | string
+    depositedAt?: DateTimeFilter<"YieldPosition"> | Date | string
+    withdrawnAt?: DateTimeNullableFilter<"YieldPosition"> | Date | string | null
+    lastUpdated?: DateTimeFilter<"YieldPosition"> | Date | string
+  }, "id">
+
+  export type YieldPositionOrderByWithAggregationInput = {
+    id?: SortOrder
+    agentWallet?: SortOrder
+    protocol?: SortOrder
+    tokenName?: SortOrder
+    poolName?: SortOrder
+    depositedAmount?: SortOrder
+    currentAmount?: SortOrderInput | SortOrder
+    apy?: SortOrder
+    txHash?: SortOrder
+    status?: SortOrder
+    depositedAt?: SortOrder
+    withdrawnAt?: SortOrderInput | SortOrder
+    lastUpdated?: SortOrder
+    _count?: YieldPositionCountOrderByAggregateInput
+    _max?: YieldPositionMaxOrderByAggregateInput
+    _min?: YieldPositionMinOrderByAggregateInput
+  }
+
+  export type YieldPositionScalarWhereWithAggregatesInput = {
+    AND?: YieldPositionScalarWhereWithAggregatesInput | YieldPositionScalarWhereWithAggregatesInput[]
+    OR?: YieldPositionScalarWhereWithAggregatesInput[]
+    NOT?: YieldPositionScalarWhereWithAggregatesInput | YieldPositionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"YieldPosition"> | string
+    agentWallet?: StringWithAggregatesFilter<"YieldPosition"> | string
+    protocol?: StringWithAggregatesFilter<"YieldPosition"> | string
+    tokenName?: StringWithAggregatesFilter<"YieldPosition"> | string
+    poolName?: StringWithAggregatesFilter<"YieldPosition"> | string
+    depositedAmount?: StringWithAggregatesFilter<"YieldPosition"> | string
+    currentAmount?: StringNullableWithAggregatesFilter<"YieldPosition"> | string | null
+    apy?: StringWithAggregatesFilter<"YieldPosition"> | string
+    txHash?: StringWithAggregatesFilter<"YieldPosition"> | string
+    status?: StringWithAggregatesFilter<"YieldPosition"> | string
+    depositedAt?: DateTimeWithAggregatesFilter<"YieldPosition"> | Date | string
+    withdrawnAt?: DateTimeNullableWithAggregatesFilter<"YieldPosition"> | Date | string | null
+    lastUpdated?: DateTimeWithAggregatesFilter<"YieldPosition"> | Date | string
+  }
+
   export type UserPortfolioPreferenceCreateInput = {
     walletAddress: string
     StablePercentage: number
@@ -11522,6 +12823,118 @@ export namespace Prisma {
     toAsset?: StringFieldUpdateOperationsInput | string
     txHash?: NullableStringFieldUpdateOperationsInput | string | null
     executedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type YieldPositionCreateInput = {
+    id?: string
+    agentWallet: string
+    protocol: string
+    tokenName: string
+    poolName: string
+    depositedAmount: string
+    currentAmount?: string | null
+    apy: string
+    txHash: string
+    status?: string
+    depositedAt?: Date | string
+    withdrawnAt?: Date | string | null
+    lastUpdated?: Date | string
+  }
+
+  export type YieldPositionUncheckedCreateInput = {
+    id?: string
+    agentWallet: string
+    protocol: string
+    tokenName: string
+    poolName: string
+    depositedAmount: string
+    currentAmount?: string | null
+    apy: string
+    txHash: string
+    status?: string
+    depositedAt?: Date | string
+    withdrawnAt?: Date | string | null
+    lastUpdated?: Date | string
+  }
+
+  export type YieldPositionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentWallet?: StringFieldUpdateOperationsInput | string
+    protocol?: StringFieldUpdateOperationsInput | string
+    tokenName?: StringFieldUpdateOperationsInput | string
+    poolName?: StringFieldUpdateOperationsInput | string
+    depositedAmount?: StringFieldUpdateOperationsInput | string
+    currentAmount?: NullableStringFieldUpdateOperationsInput | string | null
+    apy?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    depositedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    withdrawnAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type YieldPositionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentWallet?: StringFieldUpdateOperationsInput | string
+    protocol?: StringFieldUpdateOperationsInput | string
+    tokenName?: StringFieldUpdateOperationsInput | string
+    poolName?: StringFieldUpdateOperationsInput | string
+    depositedAmount?: StringFieldUpdateOperationsInput | string
+    currentAmount?: NullableStringFieldUpdateOperationsInput | string | null
+    apy?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    depositedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    withdrawnAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type YieldPositionCreateManyInput = {
+    id?: string
+    agentWallet: string
+    protocol: string
+    tokenName: string
+    poolName: string
+    depositedAmount: string
+    currentAmount?: string | null
+    apy: string
+    txHash: string
+    status?: string
+    depositedAt?: Date | string
+    withdrawnAt?: Date | string | null
+    lastUpdated?: Date | string
+  }
+
+  export type YieldPositionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentWallet?: StringFieldUpdateOperationsInput | string
+    protocol?: StringFieldUpdateOperationsInput | string
+    tokenName?: StringFieldUpdateOperationsInput | string
+    poolName?: StringFieldUpdateOperationsInput | string
+    depositedAmount?: StringFieldUpdateOperationsInput | string
+    currentAmount?: NullableStringFieldUpdateOperationsInput | string | null
+    apy?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    depositedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    withdrawnAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type YieldPositionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentWallet?: StringFieldUpdateOperationsInput | string
+    protocol?: StringFieldUpdateOperationsInput | string
+    tokenName?: StringFieldUpdateOperationsInput | string
+    poolName?: StringFieldUpdateOperationsInput | string
+    depositedAmount?: StringFieldUpdateOperationsInput | string
+    currentAmount?: NullableStringFieldUpdateOperationsInput | string | null
+    apy?: StringFieldUpdateOperationsInput | string
+    txHash?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    depositedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    withdrawnAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUpdated?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -12053,6 +13466,79 @@ export namespace Prisma {
     amount?: SortOrder
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type YieldPositionCountOrderByAggregateInput = {
+    id?: SortOrder
+    agentWallet?: SortOrder
+    protocol?: SortOrder
+    tokenName?: SortOrder
+    poolName?: SortOrder
+    depositedAmount?: SortOrder
+    currentAmount?: SortOrder
+    apy?: SortOrder
+    txHash?: SortOrder
+    status?: SortOrder
+    depositedAt?: SortOrder
+    withdrawnAt?: SortOrder
+    lastUpdated?: SortOrder
+  }
+
+  export type YieldPositionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    agentWallet?: SortOrder
+    protocol?: SortOrder
+    tokenName?: SortOrder
+    poolName?: SortOrder
+    depositedAmount?: SortOrder
+    currentAmount?: SortOrder
+    apy?: SortOrder
+    txHash?: SortOrder
+    status?: SortOrder
+    depositedAt?: SortOrder
+    withdrawnAt?: SortOrder
+    lastUpdated?: SortOrder
+  }
+
+  export type YieldPositionMinOrderByAggregateInput = {
+    id?: SortOrder
+    agentWallet?: SortOrder
+    protocol?: SortOrder
+    tokenName?: SortOrder
+    poolName?: SortOrder
+    depositedAmount?: SortOrder
+    currentAmount?: SortOrder
+    apy?: SortOrder
+    txHash?: SortOrder
+    status?: SortOrder
+    depositedAt?: SortOrder
+    withdrawnAt?: SortOrder
+    lastUpdated?: SortOrder
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -12309,6 +13795,10 @@ export namespace Prisma {
     update?: XOR<XOR<AgentUpdateToOneWithWhereWithoutTradesInput, AgentUpdateWithoutTradesInput>, AgentUncheckedUpdateWithoutTradesInput>
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -12506,6 +13996,31 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type UserContactCreateWithoutUserInput = {

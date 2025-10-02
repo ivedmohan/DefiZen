@@ -75,7 +75,8 @@ class WalletManager {
 
   async getAccount(walletAddress: string, encryptedPrivateKey: string): Promise<Account> {
     const privateKey = this.decryptPrivateKey(encryptedPrivateKey);
-    return new Account(this.provider, walletAddress, privateKey);
+    // Use cairoVersion "1" to force v3 transactions
+    return new Account(this.provider, walletAddress, privateKey, "1");
   }
 
   async validateTransaction(walletConfig: WalletConfig, amount: number, action: string): Promise<boolean> {

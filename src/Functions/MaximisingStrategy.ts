@@ -19,6 +19,9 @@ interface Token {
   const MIN_PROFIT_THRESHOLD = 0.02; 
   const MIN_DEPOSIT_AMOUNT = 0.2; 
   const HOLD_DURATION_DAYS=7;
+  
+  // NEW STRATEGY: Only deposit 50% to yield pools, keep 50% for volatility swaps
+  const MAX_DEPOSIT_PERCENTAGE = 0.5; // Only 50% max to pools
 
   function parseApyToNumber(apyString: string): number {
     return parseFloat(apyString.replace('%', ''));
@@ -112,7 +115,8 @@ interface Token {
       }
       
       if (bestPool && parseFloat(token.balance) > MIN_DEPOSIT_AMOUNT) {
-        const depositPercentage = 0.95; 
+        // NEW: Only deposit 50% max, keep rest for volatility swaps
+        const depositPercentage = MAX_DEPOSIT_PERCENTAGE; // 50% instead of 95%
         const amount = (parseFloat(token.balance) * depositPercentage).toFixed(token.decimals);
         
         const apy = parseApyToNumber(bestPool.apy || "0%");
@@ -139,19 +143,18 @@ interface Token {
       }
       
       if (bestPool && parseFloat(token.balance) > MIN_DEPOSIT_AMOUNT) {
-        let depositPercentage = 0.7; 
+        // NEW STRATEGY: Max 50% to pools for ALL tokens (stable & volatile)
+        // Keep the other 50% liquid for volatility swaps
+        let depositPercentage = MAX_DEPOSIT_PERCENTAGE; // Start at 50% max
 
-
-        if (marketTrend === 'bullish' && token.volatility && token.volatility > 0) {
-          depositPercentage = 0.85; 
-        } 
-        else if (marketTrend === 'bearish' || (token.volatility && token.volatility < -4)) {
-          depositPercentage = 0.5; // 50%
+        // Further reduce for high volatility or risk (but never exceed 50%)
+        if (marketTrend === 'bearish' || (token.volatility && token.volatility < -4)) {
+          depositPercentage = Math.min(depositPercentage, 0.35); // 35% in bearish
         }
         
-        // If risk score is very high, be more conservative with volatile assets
+        // If risk score is very high, be even more conservative
         if (riskScore > 8) {
-          depositPercentage *= 0.8; // Reduce by additional 20%
+          depositPercentage = Math.min(depositPercentage, 0.25); // 25% in high risk
         }
         
         const amount = (parseFloat(token.balance) * depositPercentage).toFixed(token.decimals);
@@ -283,12 +286,35 @@ interface Token {
   ): Promise<any[]> {
     const results = [];
     // Use the account address from env instead of hardcoded constant
-    const userAddress = process.env.ACCOUNT_ADDRESS || ACCOUNT_ADDRESS; 
+    const userAddress = process.env.ACCOUNT_ADDRESS || ACCOUNT_ADDRESS;
+    
+    // Import YieldPositionService
+    const { YieldPositionService } = await import('./YieldPositionService');
     
     for (const allocation of allocations) {
       const { token, targetPool, amount } = allocation;
     
       if (parseFloat(amount) <= MIN_DEPOSIT_AMOUNT) {
+        continue;
+      }
+      
+      // Check if already have active position for this token in this protocol
+      const hasActivePosition = await YieldPositionService.hasActivePosition(
+        userAddress,
+        token.name,
+        targetPool.protocol
+      );
+
+      if (hasActivePosition) {
+        logger.info(`⏭️  Skipping ${token.name} - already earning yield on ${targetPool.protocol}`);
+        results.push({
+          token: token.name,
+          protocol: targetPool.protocol,
+          poolName: targetPool.poolName,
+          amount,
+          status: "skipped",
+          reason: "Already has active yield position"
+        });
         continue;
       }
       
@@ -308,13 +334,38 @@ interface Token {
           );
         }
         
+        // Extract transaction hash from result
+        let txHash = 'unknown';
+        if (typeof result === 'string' && result.includes('TX:')) {
+          const match = result.match(/TX: (0x[a-fA-F0-9]+)/);
+          if (match) {
+            txHash = match[1];
+          }
+        }
+
+        // Save position to database
+        try {
+          await YieldPositionService.createPosition({
+            agentWallet: userAddress,
+            protocol: targetPool.protocol,
+            tokenName: token.name,
+            poolName: targetPool.poolName,
+            depositedAmount: amount,
+            apy: targetPool.apy || "0%",
+            txHash: txHash
+          });
+        } catch (dbError) {
+          logger.error('Failed to save position to DB (deposit still succeeded):', dbError);
+        }
+        
         results.push({
           token: token.name,
           protocol: targetPool.protocol,
           poolName: targetPool.poolName,
           amount,
           status: "success",
-          details: result
+          details: result,
+          txHash: txHash
         });
 
         logger.info("Deposit execution completed", { resultsCount: results.length });

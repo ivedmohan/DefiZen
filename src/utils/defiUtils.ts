@@ -6,6 +6,7 @@ import { Fraction, Percent } from "@uniswap/sdk-core";
 import { ProtocolConfigObject } from '../config/protocolConfig';
 import dotenv from 'dotenv';
 import { prisma } from '../db';
+import logger from './logger';
 dotenv.config()
 
 const protocolConfig: ProtocolConfig = ProtocolConfigObject
@@ -73,14 +74,13 @@ export function reconstructUint256(low: string | number | bigint, high: string |
 	const highBigInt = BigInt(high);
 	return (highBigInt << BigInt(128)) + lowBigInt;
 }
-
 export const FetchSupportedTokens=async():Promise<Token[]>=>{
 	try{
 		const tokens=await prisma.token.findMany();
 		
 		// If database returns no tokens, use fallback list of common StarkNet tokens
 		if (tokens.length === 0) {
-			console.log("Database has no tokens, using fallback list of common StarkNet tokens");
+			logger.warn("Database has no tokens, using fallback list of common StarkNet tokens");
 			return [
 				{
 					name: "USDC",
@@ -127,12 +127,11 @@ export const FetchSupportedTokens=async():Promise<Token[]>=>{
 		
 		return tokens;
 	}catch(err){
-		console.log("Couldnt fetch the supported tokens, using fallback list");
+		logger.error("Couldnt fetch the supported tokens, using fallback list", err);
 		// Return common StarkNet tokens as fallback
 		return [
 			{
 				name: "USDC",
-				decimals: 6,
 				token_address: "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
 				image: "/images/tokens/usdc.svg",
 				type: "ERC20",
@@ -155,7 +154,6 @@ export const FetchSupportedTokens=async():Promise<Token[]>=>{
 				chain_id: 1
 			},
 			{
-				name: "STRK",
 				decimals: 18,
 				token_address: "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
 				image: "/images/tokens/strk.svg",
@@ -214,7 +212,6 @@ export function prepareTokensToCheck(tokens: any[], defiTokens: Set<TokenMetadat
 		...tokens,
 		...Array.from(defiTokens).map(token => ({
 			address: token.address,
-			name: token.name,
 		}))
 	];
 }
@@ -232,7 +229,7 @@ export async function fetchTokenPrices(
 				const price = await getTokenPrice(token.token_address);
 				tokenPrices.set(token.token_address, price);
 			} catch (error) {
-				console.warn(`Failed to fetch price for regular token ${token.address}`);
+				logger.warn(`Failed to fetch price for regular token ${token.address}`);
 			}
 		});
 
@@ -254,7 +251,7 @@ export async function fetchTokenPrices(
 		// await Promise.all([...regularPricePromises, ...defiPricePromises]);
 		await Promise.all([...regularPricePromises])
 	} catch (error) {
-		console.error("Failed to fetch token prices:", error);
+		logger.error("Failed to fetch token prices:", error);
 	}
 
 	return tokenPrices;
@@ -293,7 +290,7 @@ export async function fetchTokenBalance(
 		const contract = new Contract((await get_abi).abi, token.address, provider);
 		const balance = await contract.call("balanceOf", [walletAddress]);
 		const tokenPrice = tokenPrices.get(token.address);
-		console.log(balance,token.decimals)
+		logger.info(`Balance: ${balance}, decimals: ${token.decimals}`);
 		if (!balance) {
 			return {
 				address: token.address,
@@ -315,7 +312,7 @@ export async function fetchTokenBalance(
 		const validTokenPrice = tokenPrice && !isNaN(tokenPrice) ? tokenPrice : 0;
 		const valueUsd = validTokenPrice ? (validBalanceInTokens * validTokenPrice).toFixed(2) : "0.00";
 		
-		console.log(balanceInSmallestUnit,validBalanceInTokens,validTokenPrice,valueUsd)
+		logger.info(`Balance (smallest): ${balanceInSmallestUnit}, tokens: ${validBalanceInTokens}, price: ${validTokenPrice}, USD: ${valueUsd}`);
 		return {
 			name: token.name,
 			balance: validBalanceInTokens.toString(),
@@ -327,7 +324,7 @@ export async function fetchTokenBalance(
 			priceUsd : validTokenPrice.toString()
 		};
 	} catch (error) {
-		console.error(`Failed to fetch balance for token ${token.address}:`, error);
+		logger.error(`Failed to fetch balance for token ${token.address}:`, error);
 		return {
 			address: token.address,
 			name: token.name,
@@ -347,26 +344,61 @@ export function filterNonZeroBalances(balances: TokenBalance[]): TokenBalance[] 
 	);
 }
 
+// Map of token addresses to CoinGecko IDs
+const TOKEN_TO_COINGECKO: Record<string, string> = {
+	'0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8': 'usd-coin', // USDC
+	'0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8': 'tether', // USDT
+	'0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7': 'ethereum', // ETH
+	'0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d': 'starknet', // STRK
+	'0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3': 'dai', // DAI
+};
+
+// Try fetching from CoinGecko as fallback
+async function getPriceFromCoinGecko(tokenAddress: string): Promise<number> {
+	const coingeckoId = TOKEN_TO_COINGECKO[tokenAddress];
+	if (!coingeckoId) {
+		throw new Error(`No CoinGecko mapping for token ${tokenAddress}`);
+	}
+	
+	const { data } = await axios.get(
+		`https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoId}&vs_currencies=usd`,
+		{ timeout: 5000 }
+	);
+	
+	const price = data[coingeckoId]?.usd;
+	if (!price) {
+		throw new Error(`No price data from CoinGecko for ${coingeckoId}`);
+	}
+	return price;
+}
+
 export async function getTokenPrice(
 	tokenAddress: string,
 ): Promise<number> {
+	// Try AVNU first (primary source)
 	try {
-		console.log("The token address is:",tokenAddress)
-		const { data } = await axios.get(`https://starknet.impulse.avnu.fi/v1/tokens/${tokenAddress}/prices/line`, {
-			timeout: 10000 // 10 second timeout
-		});
+		logger.info(`Fetching price from AVNU for: ${tokenAddress}`);
+		const { data } = await axios.get(
+			`https://starknet.impulse.avnu.fi/v1/tokens/${tokenAddress}/prices/line`, 
+			{ timeout: 5000 }
+		);
 		const currentPrice = data[data.length - 1]?.value;
-		console.log("the current price is",currentPrice);
-		if (!currentPrice) {
-			throw new Error(`No price data available for token ${tokenAddress}`);
+		if (currentPrice) {
+			logger.info(`✅ AVNU price: ${currentPrice}`);
+			return currentPrice;
 		}
-		return currentPrice;
 	} catch (error) {
-		console.error(`Error fetching price for ${tokenAddress}:`, error);
-		if (axios.isAxiosError(error)) {
-			throw new Error(`Failed to fetch price for token ${tokenAddress}: ${error.message}`);
-		}
-		throw error;
+		logger.warn(`⚠️ AVNU failed for ${tokenAddress}, trying CoinGecko...`);
+	}
+
+	// Fallback to CoinGecko
+	try {
+		const price = await getPriceFromCoinGecko(tokenAddress);
+		logger.info(`✅ CoinGecko price: ${price}`);
+		return price;
+	} catch (error) {
+		logger.error(`❌ All price sources failed for ${tokenAddress}`);
+		throw new Error(`Failed to fetch price for token ${tokenAddress}`);
 	}
 }
 
@@ -393,7 +425,7 @@ export async function getStakedAssetPrice(
 		// Calculate the staked token price by multiplying underlying price with the conversion index
 		return underlyingPrice * conversionIndex;
 	} catch (error) {
-		console.warn(`Failed to fetch staked asset price for ${stakingContractAddress}:`, error);
+		logger.warn(`Failed to fetch staked asset price for ${stakingContractAddress}:`, error);
 		return 0;
 	}
 }
@@ -448,7 +480,7 @@ export async function getLPTokenPrice(
 		// Price per LP token = Total Pool Value / Total Supply
 		return totalPoolValueUSD / (Number(totalSupply) / (10 ** 18));
 	} catch (error) {
-		console.warn(`Failed to calculate LP token price for pool ${poolAddress}:`, error);
+		logger.warn(`Failed to calculate LP token price for pool ${poolAddress}:`, error);
 		return 0;
 	}
 }

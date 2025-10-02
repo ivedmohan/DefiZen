@@ -248,7 +248,7 @@ export async function DepositEnduFi(
             };
         }
 
-        // Execute deposit transaction - using v3 by default with automatic fee estimation
+        // Execute deposit transaction - let starknet.js automatically determine the best version
         console.log("🚀 Executing deposit transaction...");
         try {
             const tx = await account.execute([
@@ -409,6 +409,19 @@ export const WithDrawFunctionEndufi = async (tokenName: string, amount: string, 
         await account.waitForTransaction(tx.transaction_hash, { retryInterval: 1000 });
         
         console.log("Executed withdraw successfully Transaction Hash:", tx.transaction_hash);
+        
+        // Mark position as withdrawn in database
+        try {
+            const { YieldPositionService } = await import('./YieldPositionService');
+            await YieldPositionService.markAsWithdrawn(
+                agentWalletAddress,
+                tokenName,
+                'EnduFi',
+                amount
+            );
+        } catch (dbError) {
+            console.error('Failed to update DB (withdrawal still succeeded):', dbError);
+        }
         
         return {
             success: true,

@@ -188,6 +188,22 @@ exports.Prisma.TradeScalarFieldEnum = {
   executedAt: 'executedAt'
 };
 
+exports.Prisma.YieldPositionScalarFieldEnum = {
+  id: 'id',
+  agentWallet: 'agentWallet',
+  protocol: 'protocol',
+  tokenName: 'tokenName',
+  poolName: 'poolName',
+  depositedAmount: 'depositedAmount',
+  currentAmount: 'currentAmount',
+  apy: 'apy',
+  txHash: 'txHash',
+  status: 'status',
+  depositedAt: 'depositedAt',
+  withdrawnAt: 'withdrawnAt',
+  lastUpdated: 'lastUpdated'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -222,7 +238,8 @@ exports.Prisma.ModelName = {
   Agent: 'Agent',
   Deposit: 'Deposit',
   AgentWallet: 'AgentWallet',
-  Trade: 'Trade'
+  Trade: 'Trade',
+  YieldPosition: 'YieldPosition'
 };
 
 /**

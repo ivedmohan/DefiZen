@@ -217,7 +217,8 @@ export const DepositFunctionStrkFarm = async (tokenName:string, amount:string,ac
           throw new Error("Private key not found in environment variables");
         }
         
-        const account = new Account(provider, accountAddress, privateKey);
+        // Create account with explicit cairoVersion "1" to force v3 transactions
+        const account = new Account(provider, accountAddress, privateKey, "1");
         contract.connect(account);
         
         const tokenAddress=getTokenAddress(tokenName);
@@ -268,9 +269,8 @@ export const DepositFunctionStrkFarm = async (tokenName:string, amount:string,ac
         console.log("📋 Transaction calls:", calls.length, "operations");
         
         try {
-            // Execute with v3 transaction - let starknet.js handle fee estimation automatically
-            // V3 transactions use resourceBounds instead of maxFee
-            const tx = await account.execute(calls);
+            // Force v3 transaction
+            const tx = await account.execute(calls, { version: 3 });
           
             console.log("✅ StrkFarm Deposit Transaction Hash:", tx.transaction_hash);
             return `✅ Successfully deposited ${(Number(finalAmount.toString()) / 10**18).toFixed(4)} ${tokenName} to StrkFarm! TX: ${tx.transaction_hash}`;
@@ -296,7 +296,8 @@ export const WithDrawFunctionStrkFarm = async (tokenName:string, amount:string,a
           throw new Error("Private key not found in environment variables");
         }
         
-        const account = new Account(provider, accountAddress, privateKey);
+        // Create account with explicit cairoVersion "1" to force v3 transactions
+        const account = new Account(provider, accountAddress, privateKey, "1");
         contract.connect(account);
         
         console.log("🔍 Checking withdrawal limits...");
@@ -325,10 +326,24 @@ export const WithDrawFunctionStrkFarm = async (tokenName:string, amount:string,a
                 ]
             }];
             
-            // Execute withdrawal with v3 transaction (automatic fee estimation)
+            // Execute withdrawal - let starknet.js automatically determine the best version
             const tx = await account.execute(withdrawCalls);
             
             console.log("✅ StrkFarm Withdrawal Transaction Hash:", tx.transaction_hash);
+            
+            // Mark position as withdrawn in database
+            try {
+                const { YieldPositionService } = await import('./YieldPositionService');
+                await YieldPositionService.markAsWithdrawn(
+                    accountAddress,
+                    tokenName,
+                    'StrkFarm',
+                    amount
+                );
+            } catch (dbError) {
+                console.error('Failed to update DB (withdrawal still succeeded):', dbError);
+            }
+            
             return `✅ Successfully withdrew ${(Number(finalAmount.toString()) / 10**18).toFixed(4)} ${tokenName} from StrkFarm! TX: ${tx.transaction_hash}`;
             
         } catch (txError) {

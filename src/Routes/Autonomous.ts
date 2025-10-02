@@ -183,4 +183,143 @@ AutonomousRouter.post("/swapVolatile", async (req: Request, res: Response): Prom
     }
 });
 
+// NEW: Manual withdrawal from StrkFarm
+AutonomousRouter.post("/withdraw/strkfarm", async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { tokenName, amount, userAddress } = req.body;
+        
+        if (!tokenName || !amount || !userAddress) {
+            return res.status(400).send({
+                success: false,
+                message: "Missing required fields: tokenName, amount, userAddress"
+            });
+        }
+
+        console.log(`💸 Withdrawing ${amount} ${tokenName} from StrkFarm for ${userAddress}`);
+        
+        const { WithDrawFunctionStrkFarm } = await import("../Functions/StrkFarm");
+        const result = await WithDrawFunctionStrkFarm(tokenName, amount, userAddress);
+        
+        return res.status(200).send({
+            success: true,
+            message: "Withdrawal initiated successfully",
+            data: result,
+            timestamp: new Date().toISOString()
+        });
+    } catch (err) {
+        console.error("❌ Error in StrkFarm withdrawal:", err);
+        return res.status(500).send({
+            success: false,
+            message: "Error executing withdrawal from StrkFarm",
+            error: err instanceof Error ? err.message : "Unknown error"
+        });
+    }
+});
+
+// NEW: Manual withdrawal from EnduFi
+AutonomousRouter.post("/withdraw/endufi", async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { amount, userAddress } = req.body;
+        
+        if (!amount || !userAddress) {
+            return res.status(400).send({
+                success: false,
+                message: "Missing required fields: amount, userAddress"
+            });
+        }
+
+        console.log(`💸 Withdrawing ${amount} from EnduFi for ${userAddress}`);
+        
+        const { WithDrawFunctionEndufi } = await import("../Functions/EnduFi");
+        const result = await WithDrawFunctionEndufi("ETH", amount, userAddress);
+        
+        return res.status(200).send({
+            success: true,
+            message: "Withdrawal initiated successfully",
+            data: result,
+            timestamp: new Date().toISOString()
+        });
+    } catch (err) {
+        console.error("❌ Error in EnduFi withdrawal:", err);
+        return res.status(500).send({
+            success: false,
+            message: "Error executing withdrawal from EnduFi",
+            error: err instanceof Error ? err.message : "Unknown error"
+        });
+    }
+});
+
+// NEW: Get yield positions for an agent
+AutonomousRouter.get("/positions", async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { agentWallet } = req.query;
+        
+        if (!agentWallet) {
+            return res.status(400).send({
+                success: false,
+                message: "Agent wallet address is required"
+            });
+        }
+
+        const { YieldPositionService } = await import("../Functions/YieldPositionService");
+        
+        const [activePositions, summary] = await Promise.all([
+            YieldPositionService.getActivePositions(agentWallet.toString()),
+            YieldPositionService.getTotalDeposited(agentWallet.toString())
+        ]);
+        
+        return res.status(200).send({
+            success: true,
+            data: {
+                activePositions,
+                summary,
+                timestamp: new Date().toISOString()
+            }
+        });
+    } catch (err) {
+        console.error("❌ Error fetching yield positions:", err);
+        return res.status(500).send({
+            success: false,
+            message: "Error fetching yield positions",
+            error: err instanceof Error ? err.message : "Unknown error"
+        });
+    }
+});
+
+// NEW: Get position history
+AutonomousRouter.get("/positions/history", async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { agentWallet, limit } = req.query;
+        
+        if (!agentWallet) {
+            return res.status(400).send({
+                success: false,
+                message: "Agent wallet address is required"
+            });
+        }
+
+        const { YieldPositionService } = await import("../Functions/YieldPositionService");
+        const history = await YieldPositionService.getPositionHistory(
+            agentWallet.toString(),
+            limit ? parseInt(limit.toString()) : 50
+        );
+        
+        return res.status(200).send({
+            success: true,
+            data: {
+                history,
+                count: history.length,
+                timestamp: new Date().toISOString()
+            }
+        });
+    } catch (err) {
+        console.error("❌ Error fetching position history:", err);
+        return res.status(500).send({
+            success: false,
+            message: "Error fetching position history",
+            error: err instanceof Error ? err.message : "Unknown error"
+        });
+    }
+});
+
 export default AutonomousRouter;

@@ -172,9 +172,9 @@ app.post('/depositStrkFarm',async (req: Request, res: Response) => {
 
 // NEW: Autonomous Trading Cron Job  
 const autonomousJob = new CronJob(
-  '0 0 */1 * * *',  // Every 1 hour in production
+  '0 */6 * * *',  // PRODUCTION: Every 6 hours (at minute 0 of every 6th hour)
   async function(){
-    console.log("🤖 Running autonomous trading job...");
+    console.log("🤖 Running autonomous trading job (every 6 hours)...");
     
     try {
       // Get all unique agent wallets with active deposits

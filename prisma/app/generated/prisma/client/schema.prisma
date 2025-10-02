@@ -94,6 +94,25 @@ model Trade {
   executedAt  DateTime @default(now())
 }
 
+model YieldPosition {
+  id              String    @id @default(uuid())
+  agentWallet     String
+  protocol        String // "StrkFarm", "EnduFi", etc.
+  tokenName       String // "STRK", "ETH", "USDC", etc.
+  poolName        String // Pool identifier
+  depositedAmount String // Amount deposited
+  currentAmount   String? // Current amount (with yield)
+  apy             String // APY at time of deposit
+  txHash          String // Deposit transaction hash
+  status          String    @default("active") // "active", "withdrawn", "failed"
+  depositedAt     DateTime  @default(now())
+  withdrawnAt     DateTime?
+  lastUpdated     DateTime  @updatedAt
+
+  @@index([agentWallet, status])
+  @@index([protocol, status])
+}
+
 enum TradeType {
   BUY
   SELL
