@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^1.7.9",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@langchain/anthropic": "^0.3.15",
@@ -43,6 +44,7 @@
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.22.0",
+    "eslint-config-next": "^15.2.1",
     "prisma": "^6.4.1",
     "sass": "^1.85.1",
     "tailwindcss": "^3.4.10",
