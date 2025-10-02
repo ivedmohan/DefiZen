@@ -13,9 +13,14 @@ export const HIDE_REMOTE_LOGO = true;
 export const DAPP_LOGO_LOCAL = "/images/logo-placeholder.svg";
 
 // Backend URL - use localhost for development
-export const BACKEND_URL = process.env.NODE_ENV === 'production' 
-  ? "https://hackergames-backend.onrender.com"
-  : "http://localhost:3002";
+// Backend URL resolution:
+// - In production, prefer an explicit env var `NEXT_PUBLIC_BACKEND_URL` (set in Vercel).
+// - Fallback to the Railway deployment URL used for the backend in this project.
+// - In development, use the localhost backend.
+export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+  || (process.env.NODE_ENV === 'production'
+    ? "https://defizen-production.up.railway.app"
+    : "http://localhost:3002");
 
 // Agent wallet management constants
 export const AGENT_WALLET_PERMISSIONS = {
