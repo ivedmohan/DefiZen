@@ -6,10 +6,11 @@ exports.DEFAULT_NATIVE = 30;
 exports.DEFAULT_OTHER = 30;
 exports.ACCOUNT_ADDRESS = "0x5bafe2c53415743947065e902274f85e6300e9fb27d21bc29c2ce217ea0b37c2";
 exports.DAPP_LOGO = "https://media-hosting.imagekit.io//d90e8f22145b401f/AgentLogo.jpg?Expires=1837107676&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=Q3pK1cJZ03D5-7-Ctzpk6ce8kQnNgX6iEhA039Gwkt2AB8I1QEBcc1HjO7uVmK6deTqOp-QYWb4-nwLNgbCcqrekpUDunBPrV67icunZRDwTLJX4dJpHzBSwkfAvIRQSTx8TQ6inx0IMbknz-lk9Togq6d~dEt13mT7d~qWJY2p~urnAuYh0Gbp9IPz8CrbVMJWoNluAQrpQTO6hBdtiJ2s9kGFWXXUsF0huedX9rLbNpzllTK3hGCAkK3lznwmEqWUzvvEjpssCWfDgL8O6v92MGaZdPiZpqRGgcSV41vxsZssFmKkCRtvSHDoyTUSuGXJQNMxwlIRQwXUzhymaKg__";
-// Backend URL - use localhost for development
-exports.BACKEND_URL = process.env.NODE_ENV === 'production'
-    ? "https://hackergames-backend.onrender.com"
-    : "http://localhost:3002";
+// Backend URL resolution - prefer NEXT_PUBLIC_BACKEND_URL, then Railway fallback
+exports.BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+    || (process.env.NODE_ENV === 'production'
+        ? "https://defizen-production.up.railway.app"
+        : "http://localhost:3002");
 // Agent wallet management constants
 exports.AGENT_WALLET_PERMISSIONS = {
     CONSERVATIVE: {
