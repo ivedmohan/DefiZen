@@ -268,15 +268,9 @@ export const DepositFunctionStrkFarm = async (tokenName:string, amount:string,ac
         console.log("📋 Transaction calls:", calls.length, "operations");
         
         try {
-            // Estimate fee first with v3 transaction
-            const feeEstimate = await account.estimateFee(calls, { version: 3 });
-            console.log("💰 Estimated fee:", feeEstimate.overall_fee.toString(), "wei");
-            
-            // Execute with proper fee and v3 transaction version
-            const tx = await account.execute(calls, undefined, {
-                maxFee: (BigInt(feeEstimate.overall_fee.toString()) * BigInt(150)) / BigInt(100), // 50% buffer
-                version: 3 // Explicitly use v3 transactions (current StarkNet standard)
-            });
+            // Execute with v3 transaction - let starknet.js handle fee estimation automatically
+            // V3 transactions use resourceBounds instead of maxFee
+            const tx = await account.execute(calls);
           
             console.log("✅ StrkFarm Deposit Transaction Hash:", tx.transaction_hash);
             return `✅ Successfully deposited ${(Number(finalAmount.toString()) / 10**18).toFixed(4)} ${tokenName} to StrkFarm! TX: ${tx.transaction_hash}`;
@@ -331,12 +325,8 @@ export const WithDrawFunctionStrkFarm = async (tokenName:string, amount:string,a
                 ]
             }];
             
-            const feeEstimate = await account.estimateFee(withdrawCalls);
-            console.log("💰 Estimated fee:", feeEstimate.overall_fee.toString(), "wei");
-            
-            const tx = await account.execute(withdrawCalls, undefined, {
-                maxFee: (BigInt(feeEstimate.overall_fee.toString()) * BigInt(150)) / BigInt(100) // 50% buffer
-            });
+            // Execute withdrawal with v3 transaction (automatic fee estimation)
+            const tx = await account.execute(withdrawCalls);
             
             console.log("✅ StrkFarm Withdrawal Transaction Hash:", tx.transaction_hash);
             return `✅ Successfully withdrew ${(Number(finalAmount.toString()) / 10**18).toFixed(4)} ${tokenName} from StrkFarm! TX: ${tx.transaction_hash}`;

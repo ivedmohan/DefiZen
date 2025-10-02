@@ -248,7 +248,7 @@ export async function DepositEnduFi(
             };
         }
 
-        // Execute deposit transaction with v3 transaction version
+        // Execute deposit transaction - using v3 by default with automatic fee estimation
         console.log("🚀 Executing deposit transaction...");
         try {
             const tx = await account.execute([
@@ -260,9 +260,7 @@ export async function DepositEnduFi(
                         agentWalletAddress
                     ]
                 }
-            ], undefined, {
-                version: 3 // Explicitly use v3 transactions (current StarkNet standard)
-            });
+            ]);
 
             console.log(`📝 Transaction submitted: ${tx.transaction_hash}`);
             console.log("⏳ Waiting for transaction confirmation...");
