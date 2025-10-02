@@ -27,9 +27,10 @@ setupGlobalErrorHandlers();
 
 const app: Express = express();
 
-// Security middleware
+// Security middleware - Permissive CORS for college project
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'],
+  origin: process.env.NODE_ENV === 'production' ? 
+    (process.env.ALLOWED_ORIGINS?.split(',') || true) : true,
   credentials: true
 }));
 
