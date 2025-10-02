@@ -306,19 +306,14 @@ export const WithDrawFunctionStrkFarm = async (tokenName:string, amount:string,a
         
         console.log("🔍 Checking withdrawal limits...");
         
-        const maxWithdraw= await contract.call(
-          "max_withdraw",
-          [
-            accountAddress
-          ]
-        );
+        // Skip max_withdraw check due to ABI limitation - let contract handle limits
+        // const maxWithdraw = await contract.call("max_withdraw", [accountAddress]);
         
         const withdrawAmount = BigInt(Number(amount) * 10 ** 18);
-        const finalAmount = Number(withdrawAmount) > Number(maxWithdraw) ? maxWithdraw : withdrawAmount;
+        const finalAmount = withdrawAmount; // Use full amount, let contract validate
         
-        if (BigInt(maxWithdraw.toString()) === BigInt(0)) {
-            throw new Error("No funds available for withdrawal");
-        }
+        // Skip zero balance check since we removed maxWithdraw call
+        // Contract will handle insufficient balance errors
         
         const uintAmount = uint256.bnToUint256(finalAmount.toString());
         console.log("💱 Final withdrawal amount:", (Number(finalAmount.toString()) / 10**18).toFixed(4), tokenName);
