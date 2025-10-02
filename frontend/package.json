@@ -20,6 +20,7 @@
     "@panoraexchange/swap-sdk": "^1.0.8",
     "@prisma/client": "^6.4.1",
     "@starknet-react/chains": "^5.0.3",
+  "starknet": "^6.24.1",
     "@starknet-react/core": "^3.7.2",
     "@tensorflow/tfjs": "^4.22.0",
     "axios": "^1.7.9",
