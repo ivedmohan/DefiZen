@@ -23,3 +23,37 @@ pnpm-debug.log*
 *.tsbuildinfo
 
 # Edit
+# Temporary files
+*.bak
+*.tmp
+*.temp
+
+# Test files
+test-*.sh
+test-*.ts
+test-*.js
+test_*.sh
+
+# Deployment artifacts
+*.zip
+deploy/
+
+# IDE
+.idea/
+.kombai/
+.vscode/
+
+# Wallet reports (generated files)
+wallet_reports/*.json
+
+# SQL temp queries
+*.sql
+!prisma/schema.prisma
+
+# Shell scripts (except useful ones)
+revert-*.sh
+withdraw-all.sh
+
+# Server logs (use Winston logs in logs/ folder)
+server.log
+logs.*.log

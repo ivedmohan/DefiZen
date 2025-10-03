@@ -1614,12 +1614,10 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    contacts: number
     deposits: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contacts?: boolean | UserCountOutputTypeCountContactsArgs
     deposits?: boolean | UserCountOutputTypeCountDepositsArgs
   }
 
@@ -1632,13 +1630,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountContactsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserContactWhereInput
   }
 
   /**
@@ -2908,7 +2899,6 @@ export namespace Prisma {
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     walletAddress?: boolean
-    contacts?: boolean | User$contactsArgs<ExtArgs>
     deposits?: boolean | User$depositsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -2930,7 +2920,6 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "walletAddress", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contacts?: boolean | User$contactsArgs<ExtArgs>
     deposits?: boolean | User$depositsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -2940,7 +2929,6 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      contacts: Prisma.$UserContactPayload<ExtArgs>[]
       deposits: Prisma.$DepositPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -3340,7 +3328,6 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    contacts<T extends User$contactsArgs<ExtArgs> = {}>(args?: Subset<T, User$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     deposits<T extends User$depositsArgs<ExtArgs> = {}>(args?: Subset<T, User$depositsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3761,30 +3748,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.contacts
-   */
-  export type User$contactsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserContact
-     */
-    select?: UserContactSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserContact
-     */
-    omit?: UserContactOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactInclude<ExtArgs> | null
-    where?: UserContactWhereInput
-    orderBy?: UserContactOrderByWithRelationInput | UserContactOrderByWithRelationInput[]
-    cursor?: UserContactWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserContactScalarFieldEnum | UserContactScalarFieldEnum[]
-  }
-
-  /**
    * User.deposits
    */
   export type User$depositsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3841,66 +3804,94 @@ export namespace Prisma {
 
   export type UserContactAvgAggregateOutputType = {
     id: number | null
-    userId: number | null
   }
 
   export type UserContactSumAggregateOutputType = {
     id: number | null
-    userId: number | null
   }
 
   export type UserContactMinAggregateOutputType = {
     id: number | null
-    userId: number | null
-    name: string | null
-    address: string | null
+    userWallet: string | null
+    contactWallet: string | null
+    contactName: string | null
+    contactType: string | null
+    isActive: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    lastInteraction: Date | null
   }
 
   export type UserContactMaxAggregateOutputType = {
     id: number | null
-    userId: number | null
-    name: string | null
-    address: string | null
+    userWallet: string | null
+    contactWallet: string | null
+    contactName: string | null
+    contactType: string | null
+    isActive: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    lastInteraction: Date | null
   }
 
   export type UserContactCountAggregateOutputType = {
     id: number
-    userId: number
-    name: number
-    address: number
+    userWallet: number
+    contactWallet: number
+    contactName: number
+    contactType: number
+    isActive: number
+    tags: number
+    notes: number
+    createdAt: number
+    lastInteraction: number
     _all: number
   }
 
 
   export type UserContactAvgAggregateInputType = {
     id?: true
-    userId?: true
   }
 
   export type UserContactSumAggregateInputType = {
     id?: true
-    userId?: true
   }
 
   export type UserContactMinAggregateInputType = {
     id?: true
-    userId?: true
-    name?: true
-    address?: true
+    userWallet?: true
+    contactWallet?: true
+    contactName?: true
+    contactType?: true
+    isActive?: true
+    notes?: true
+    createdAt?: true
+    lastInteraction?: true
   }
 
   export type UserContactMaxAggregateInputType = {
     id?: true
-    userId?: true
-    name?: true
-    address?: true
+    userWallet?: true
+    contactWallet?: true
+    contactName?: true
+    contactType?: true
+    isActive?: true
+    notes?: true
+    createdAt?: true
+    lastInteraction?: true
   }
 
   export type UserContactCountAggregateInputType = {
     id?: true
-    userId?: true
-    name?: true
-    address?: true
+    userWallet?: true
+    contactWallet?: true
+    contactName?: true
+    contactType?: true
+    isActive?: true
+    tags?: true
+    notes?: true
+    createdAt?: true
+    lastInteraction?: true
     _all?: true
   }
 
@@ -3992,9 +3983,15 @@ export namespace Prisma {
 
   export type UserContactGroupByOutputType = {
     id: number
-    userId: number
-    name: string
-    address: string
+    userWallet: string
+    contactWallet: string
+    contactName: string
+    contactType: string | null
+    isActive: boolean | null
+    tags: string[]
+    notes: string | null
+    createdAt: Date
+    lastInteraction: Date | null
     _count: UserContactCountAggregateOutputType | null
     _avg: UserContactAvgAggregateOutputType | null
     _sum: UserContactSumAggregateOutputType | null
@@ -4018,56 +4015,72 @@ export namespace Prisma {
 
   export type UserContactSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    name?: boolean
-    address?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    userWallet?: boolean
+    contactWallet?: boolean
+    contactName?: boolean
+    contactType?: boolean
+    isActive?: boolean
+    tags?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    lastInteraction?: boolean
   }, ExtArgs["result"]["userContact"]>
 
   export type UserContactSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    name?: boolean
-    address?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    userWallet?: boolean
+    contactWallet?: boolean
+    contactName?: boolean
+    contactType?: boolean
+    isActive?: boolean
+    tags?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    lastInteraction?: boolean
   }, ExtArgs["result"]["userContact"]>
 
   export type UserContactSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    name?: boolean
-    address?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    userWallet?: boolean
+    contactWallet?: boolean
+    contactName?: boolean
+    contactType?: boolean
+    isActive?: boolean
+    tags?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    lastInteraction?: boolean
   }, ExtArgs["result"]["userContact"]>
 
   export type UserContactSelectScalar = {
     id?: boolean
-    userId?: boolean
-    name?: boolean
-    address?: boolean
+    userWallet?: boolean
+    contactWallet?: boolean
+    contactName?: boolean
+    contactType?: boolean
+    isActive?: boolean
+    tags?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    lastInteraction?: boolean
   }
 
-  export type UserContactOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "address", ExtArgs["result"]["userContact"]>
-  export type UserContactInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type UserContactIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type UserContactIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
+  export type UserContactOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userWallet" | "contactWallet" | "contactName" | "contactType" | "isActive" | "tags" | "notes" | "createdAt" | "lastInteraction", ExtArgs["result"]["userContact"]>
 
   export type $UserContactPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "UserContact"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      userId: number
-      name: string
-      address: string
+      userWallet: string
+      contactWallet: string
+      contactName: string
+      contactType: string | null
+      isActive: boolean | null
+      tags: string[]
+      notes: string | null
+      createdAt: Date
+      lastInteraction: Date | null
     }, ExtArgs["result"]["userContact"]>
     composites: {}
   }
@@ -4462,7 +4475,6 @@ export namespace Prisma {
    */
   export interface Prisma__UserContactClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4493,9 +4505,15 @@ export namespace Prisma {
    */
   interface UserContactFieldRefs {
     readonly id: FieldRef<"UserContact", 'Int'>
-    readonly userId: FieldRef<"UserContact", 'Int'>
-    readonly name: FieldRef<"UserContact", 'String'>
-    readonly address: FieldRef<"UserContact", 'String'>
+    readonly userWallet: FieldRef<"UserContact", 'String'>
+    readonly contactWallet: FieldRef<"UserContact", 'String'>
+    readonly contactName: FieldRef<"UserContact", 'String'>
+    readonly contactType: FieldRef<"UserContact", 'String'>
+    readonly isActive: FieldRef<"UserContact", 'Boolean'>
+    readonly tags: FieldRef<"UserContact", 'String[]'>
+    readonly notes: FieldRef<"UserContact", 'String'>
+    readonly createdAt: FieldRef<"UserContact", 'DateTime'>
+    readonly lastInteraction: FieldRef<"UserContact", 'DateTime'>
   }
     
 
@@ -4512,10 +4530,6 @@ export namespace Prisma {
      * Omit specific fields from the UserContact
      */
     omit?: UserContactOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactInclude<ExtArgs> | null
     /**
      * Filter, which UserContact to fetch.
      */
@@ -4535,10 +4549,6 @@ export namespace Prisma {
      */
     omit?: UserContactOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactInclude<ExtArgs> | null
-    /**
      * Filter, which UserContact to fetch.
      */
     where: UserContactWhereUniqueInput
@@ -4556,10 +4566,6 @@ export namespace Prisma {
      * Omit specific fields from the UserContact
      */
     omit?: UserContactOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactInclude<ExtArgs> | null
     /**
      * Filter, which UserContact to fetch.
      */
@@ -4609,10 +4615,6 @@ export namespace Prisma {
      */
     omit?: UserContactOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactInclude<ExtArgs> | null
-    /**
      * Filter, which UserContact to fetch.
      */
     where?: UserContactWhereInput
@@ -4661,10 +4663,6 @@ export namespace Prisma {
      */
     omit?: UserContactOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactInclude<ExtArgs> | null
-    /**
      * Filter, which UserContacts to fetch.
      */
     where?: UserContactWhereInput
@@ -4708,10 +4706,6 @@ export namespace Prisma {
      */
     omit?: UserContactOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactInclude<ExtArgs> | null
-    /**
      * The data needed to create a UserContact.
      */
     data: XOR<UserContactCreateInput, UserContactUncheckedCreateInput>
@@ -4745,10 +4739,6 @@ export namespace Prisma {
      */
     data: UserContactCreateManyInput | UserContactCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4763,10 +4753,6 @@ export namespace Prisma {
      * Omit specific fields from the UserContact
      */
     omit?: UserContactOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactInclude<ExtArgs> | null
     /**
      * The data needed to update a UserContact.
      */
@@ -4819,10 +4805,6 @@ export namespace Prisma {
      * Limit how many UserContacts to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4837,10 +4819,6 @@ export namespace Prisma {
      * Omit specific fields from the UserContact
      */
     omit?: UserContactOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactInclude<ExtArgs> | null
     /**
      * The filter to search for the UserContact to update in case it exists.
      */
@@ -4867,10 +4845,6 @@ export namespace Prisma {
      * Omit specific fields from the UserContact
      */
     omit?: UserContactOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactInclude<ExtArgs> | null
     /**
      * Filter which UserContact to delete.
      */
@@ -4903,10 +4877,6 @@ export namespace Prisma {
      * Omit specific fields from the UserContact
      */
     omit?: UserContactOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserContactInclude<ExtArgs> | null
   }
 
 
@@ -11517,9 +11487,15 @@ export namespace Prisma {
 
   export const UserContactScalarFieldEnum: {
     id: 'id',
-    userId: 'userId',
-    name: 'name',
-    address: 'address'
+    userWallet: 'userWallet',
+    contactWallet: 'contactWallet',
+    contactName: 'contactName',
+    contactType: 'contactType',
+    isActive: 'isActive',
+    tags: 'tags',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    lastInteraction: 'lastInteraction'
   };
 
   export type UserContactScalarFieldEnum = (typeof UserContactScalarFieldEnum)[keyof typeof UserContactScalarFieldEnum]
@@ -11684,6 +11660,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -11722,13 +11705,6 @@ export namespace Prisma {
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -11809,14 +11785,12 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     id?: IntFilter<"User"> | number
     walletAddress?: StringFilter<"User"> | string
-    contacts?: UserContactListRelationFilter
     deposits?: DepositListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     walletAddress?: SortOrder
-    contacts?: UserContactOrderByRelationAggregateInput
     deposits?: DepositOrderByRelationAggregateInput
   }
 
@@ -11826,7 +11800,6 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    contacts?: UserContactListRelationFilter
     deposits?: DepositListRelationFilter
   }, "id" | "walletAddress">
 
@@ -11853,36 +11826,58 @@ export namespace Prisma {
     OR?: UserContactWhereInput[]
     NOT?: UserContactWhereInput | UserContactWhereInput[]
     id?: IntFilter<"UserContact"> | number
-    userId?: IntFilter<"UserContact"> | number
-    name?: StringFilter<"UserContact"> | string
-    address?: StringFilter<"UserContact"> | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    userWallet?: StringFilter<"UserContact"> | string
+    contactWallet?: StringFilter<"UserContact"> | string
+    contactName?: StringFilter<"UserContact"> | string
+    contactType?: StringNullableFilter<"UserContact"> | string | null
+    isActive?: BoolNullableFilter<"UserContact"> | boolean | null
+    tags?: StringNullableListFilter<"UserContact">
+    notes?: StringNullableFilter<"UserContact"> | string | null
+    createdAt?: DateTimeFilter<"UserContact"> | Date | string
+    lastInteraction?: DateTimeNullableFilter<"UserContact"> | Date | string | null
   }
 
   export type UserContactOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    address?: SortOrder
-    user?: UserOrderByWithRelationInput
+    userWallet?: SortOrder
+    contactWallet?: SortOrder
+    contactName?: SortOrder
+    contactType?: SortOrderInput | SortOrder
+    isActive?: SortOrderInput | SortOrder
+    tags?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    lastInteraction?: SortOrderInput | SortOrder
   }
 
   export type UserContactWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    userWallet_contactWallet?: UserContactUserWalletContactWalletCompoundUniqueInput
     AND?: UserContactWhereInput | UserContactWhereInput[]
     OR?: UserContactWhereInput[]
     NOT?: UserContactWhereInput | UserContactWhereInput[]
-    userId?: IntFilter<"UserContact"> | number
-    name?: StringFilter<"UserContact"> | string
-    address?: StringFilter<"UserContact"> | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
+    userWallet?: StringFilter<"UserContact"> | string
+    contactWallet?: StringFilter<"UserContact"> | string
+    contactName?: StringFilter<"UserContact"> | string
+    contactType?: StringNullableFilter<"UserContact"> | string | null
+    isActive?: BoolNullableFilter<"UserContact"> | boolean | null
+    tags?: StringNullableListFilter<"UserContact">
+    notes?: StringNullableFilter<"UserContact"> | string | null
+    createdAt?: DateTimeFilter<"UserContact"> | Date | string
+    lastInteraction?: DateTimeNullableFilter<"UserContact"> | Date | string | null
+  }, "id" | "userWallet_contactWallet">
 
   export type UserContactOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    address?: SortOrder
+    userWallet?: SortOrder
+    contactWallet?: SortOrder
+    contactName?: SortOrder
+    contactType?: SortOrderInput | SortOrder
+    isActive?: SortOrderInput | SortOrder
+    tags?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    lastInteraction?: SortOrderInput | SortOrder
     _count?: UserContactCountOrderByAggregateInput
     _avg?: UserContactAvgOrderByAggregateInput
     _max?: UserContactMaxOrderByAggregateInput
@@ -11895,9 +11890,15 @@ export namespace Prisma {
     OR?: UserContactScalarWhereWithAggregatesInput[]
     NOT?: UserContactScalarWhereWithAggregatesInput | UserContactScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"UserContact"> | number
-    userId?: IntWithAggregatesFilter<"UserContact"> | number
-    name?: StringWithAggregatesFilter<"UserContact"> | string
-    address?: StringWithAggregatesFilter<"UserContact"> | string
+    userWallet?: StringWithAggregatesFilter<"UserContact"> | string
+    contactWallet?: StringWithAggregatesFilter<"UserContact"> | string
+    contactName?: StringWithAggregatesFilter<"UserContact"> | string
+    contactType?: StringNullableWithAggregatesFilter<"UserContact"> | string | null
+    isActive?: BoolNullableWithAggregatesFilter<"UserContact"> | boolean | null
+    tags?: StringNullableListFilter<"UserContact">
+    notes?: StringNullableWithAggregatesFilter<"UserContact"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"UserContact"> | Date | string
+    lastInteraction?: DateTimeNullableWithAggregatesFilter<"UserContact"> | Date | string | null
   }
 
   export type TokenWhereInput = {
@@ -12383,27 +12384,23 @@ export namespace Prisma {
 
   export type UserCreateInput = {
     walletAddress: string
-    contacts?: UserContactCreateNestedManyWithoutUserInput
     deposits?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: number
     walletAddress: string
-    contacts?: UserContactUncheckedCreateNestedManyWithoutUserInput
     deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
     walletAddress?: StringFieldUpdateOperationsInput | string
-    contacts?: UserContactUpdateManyWithoutUserNestedInput
     deposits?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     walletAddress?: StringFieldUpdateOperationsInput | string
-    contacts?: UserContactUncheckedUpdateManyWithoutUserNestedInput
     deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -12422,48 +12419,91 @@ export namespace Prisma {
   }
 
   export type UserContactCreateInput = {
-    name: string
-    address: string
-    user: UserCreateNestedOneWithoutContactsInput
+    userWallet: string
+    contactWallet: string
+    contactName: string
+    contactType?: string | null
+    isActive?: boolean | null
+    tags?: UserContactCreatetagsInput | string[]
+    notes?: string | null
+    createdAt?: Date | string
+    lastInteraction?: Date | string | null
   }
 
   export type UserContactUncheckedCreateInput = {
     id?: number
-    userId: number
-    name: string
-    address: string
+    userWallet: string
+    contactWallet: string
+    contactName: string
+    contactType?: string | null
+    isActive?: boolean | null
+    tags?: UserContactCreatetagsInput | string[]
+    notes?: string | null
+    createdAt?: Date | string
+    lastInteraction?: Date | string | null
   }
 
   export type UserContactUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutContactsNestedInput
+    userWallet?: StringFieldUpdateOperationsInput | string
+    contactWallet?: StringFieldUpdateOperationsInput | string
+    contactName?: StringFieldUpdateOperationsInput | string
+    contactType?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tags?: UserContactUpdatetagsInput | string[]
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastInteraction?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserContactUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
+    userWallet?: StringFieldUpdateOperationsInput | string
+    contactWallet?: StringFieldUpdateOperationsInput | string
+    contactName?: StringFieldUpdateOperationsInput | string
+    contactType?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tags?: UserContactUpdatetagsInput | string[]
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastInteraction?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserContactCreateManyInput = {
     id?: number
-    userId: number
-    name: string
-    address: string
+    userWallet: string
+    contactWallet: string
+    contactName: string
+    contactType?: string | null
+    isActive?: boolean | null
+    tags?: UserContactCreatetagsInput | string[]
+    notes?: string | null
+    createdAt?: Date | string
+    lastInteraction?: Date | string | null
   }
 
   export type UserContactUpdateManyMutationInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
+    userWallet?: StringFieldUpdateOperationsInput | string
+    contactWallet?: StringFieldUpdateOperationsInput | string
+    contactName?: StringFieldUpdateOperationsInput | string
+    contactType?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tags?: UserContactUpdatetagsInput | string[]
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastInteraction?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserContactUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
+    userWallet?: StringFieldUpdateOperationsInput | string
+    contactWallet?: StringFieldUpdateOperationsInput | string
+    contactName?: StringFieldUpdateOperationsInput | string
+    contactType?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tags?: UserContactUpdatetagsInput | string[]
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastInteraction?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type TokenCreateInput = {
@@ -13035,20 +13075,10 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type UserContactListRelationFilter = {
-    every?: UserContactWhereInput
-    some?: UserContactWhereInput
-    none?: UserContactWhereInput
-  }
-
   export type DepositListRelationFilter = {
     every?: DepositWhereInput
     some?: DepositWhereInput
     none?: DepositWhereInput
-  }
-
-  export type UserContactOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type DepositOrderByRelationAggregateInput = {
@@ -13078,40 +13108,163 @@ export namespace Prisma {
     id?: SortOrder
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type UserContactUserWalletContactWalletCompoundUniqueInput = {
+    userWallet: string
+    contactWallet: string
   }
 
   export type UserContactCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    address?: SortOrder
+    userWallet?: SortOrder
+    contactWallet?: SortOrder
+    contactName?: SortOrder
+    contactType?: SortOrder
+    isActive?: SortOrder
+    tags?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    lastInteraction?: SortOrder
   }
 
   export type UserContactAvgOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
   }
 
   export type UserContactMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    address?: SortOrder
+    userWallet?: SortOrder
+    contactWallet?: SortOrder
+    contactName?: SortOrder
+    contactType?: SortOrder
+    isActive?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    lastInteraction?: SortOrder
   }
 
   export type UserContactMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    address?: SortOrder
+    userWallet?: SortOrder
+    contactWallet?: SortOrder
+    contactName?: SortOrder
+    contactType?: SortOrder
+    isActive?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    lastInteraction?: SortOrder
   }
 
   export type UserContactSumOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type TokenCountOrderByAggregateInput = {
@@ -13161,41 +13314,10 @@ export namespace Prisma {
     decimals?: SortOrder
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
   export type TradeListRelationFilter = {
     every?: TradeWhereInput
     some?: TradeWhereInput
     none?: TradeWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type TradeOrderByRelationAggregateInput = {
@@ -13223,38 +13345,6 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
   export type DecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -13264,6 +13354,11 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
   export type AgentScalarRelationFilter = {
@@ -13466,17 +13561,6 @@ export namespace Prisma {
     amount?: SortOrder
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type YieldPositionCountOrderByAggregateInput = {
     id?: SortOrder
     agentWallet?: SortOrder
@@ -13525,20 +13609,6 @@ export namespace Prisma {
     lastUpdated?: SortOrder
   }
 
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -13551,13 +13621,6 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type UserContactCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserContactCreateWithoutUserInput, UserContactUncheckedCreateWithoutUserInput> | UserContactCreateWithoutUserInput[] | UserContactUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserContactCreateOrConnectWithoutUserInput | UserContactCreateOrConnectWithoutUserInput[]
-    createMany?: UserContactCreateManyUserInputEnvelope
-    connect?: UserContactWhereUniqueInput | UserContactWhereUniqueInput[]
-  }
-
   export type DepositCreateNestedManyWithoutUserInput = {
     create?: XOR<DepositCreateWithoutUserInput, DepositUncheckedCreateWithoutUserInput> | DepositCreateWithoutUserInput[] | DepositUncheckedCreateWithoutUserInput[]
     connectOrCreate?: DepositCreateOrConnectWithoutUserInput | DepositCreateOrConnectWithoutUserInput[]
@@ -13565,32 +13628,11 @@ export namespace Prisma {
     connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
   }
 
-  export type UserContactUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserContactCreateWithoutUserInput, UserContactUncheckedCreateWithoutUserInput> | UserContactCreateWithoutUserInput[] | UserContactUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserContactCreateOrConnectWithoutUserInput | UserContactCreateOrConnectWithoutUserInput[]
-    createMany?: UserContactCreateManyUserInputEnvelope
-    connect?: UserContactWhereUniqueInput | UserContactWhereUniqueInput[]
-  }
-
   export type DepositUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<DepositCreateWithoutUserInput, DepositUncheckedCreateWithoutUserInput> | DepositCreateWithoutUserInput[] | DepositUncheckedCreateWithoutUserInput[]
     connectOrCreate?: DepositCreateOrConnectWithoutUserInput | DepositCreateOrConnectWithoutUserInput[]
     createMany?: DepositCreateManyUserInputEnvelope
     connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-  }
-
-  export type UserContactUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserContactCreateWithoutUserInput, UserContactUncheckedCreateWithoutUserInput> | UserContactCreateWithoutUserInput[] | UserContactUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserContactCreateOrConnectWithoutUserInput | UserContactCreateOrConnectWithoutUserInput[]
-    upsert?: UserContactUpsertWithWhereUniqueWithoutUserInput | UserContactUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserContactCreateManyUserInputEnvelope
-    set?: UserContactWhereUniqueInput | UserContactWhereUniqueInput[]
-    disconnect?: UserContactWhereUniqueInput | UserContactWhereUniqueInput[]
-    delete?: UserContactWhereUniqueInput | UserContactWhereUniqueInput[]
-    connect?: UserContactWhereUniqueInput | UserContactWhereUniqueInput[]
-    update?: UserContactUpdateWithWhereUniqueWithoutUserInput | UserContactUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserContactUpdateManyWithWhereWithoutUserInput | UserContactUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserContactScalarWhereInput | UserContactScalarWhereInput[]
   }
 
   export type DepositUpdateManyWithoutUserNestedInput = {
@@ -13607,20 +13649,6 @@ export namespace Prisma {
     deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
   }
 
-  export type UserContactUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserContactCreateWithoutUserInput, UserContactUncheckedCreateWithoutUserInput> | UserContactCreateWithoutUserInput[] | UserContactUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserContactCreateOrConnectWithoutUserInput | UserContactCreateOrConnectWithoutUserInput[]
-    upsert?: UserContactUpsertWithWhereUniqueWithoutUserInput | UserContactUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserContactCreateManyUserInputEnvelope
-    set?: UserContactWhereUniqueInput | UserContactWhereUniqueInput[]
-    disconnect?: UserContactWhereUniqueInput | UserContactWhereUniqueInput[]
-    delete?: UserContactWhereUniqueInput | UserContactWhereUniqueInput[]
-    connect?: UserContactWhereUniqueInput | UserContactWhereUniqueInput[]
-    update?: UserContactUpdateWithWhereUniqueWithoutUserInput | UserContactUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserContactUpdateManyWithWhereWithoutUserInput | UserContactUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserContactScalarWhereInput | UserContactScalarWhereInput[]
-  }
-
   export type DepositUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<DepositCreateWithoutUserInput, DepositUncheckedCreateWithoutUserInput> | DepositCreateWithoutUserInput[] | DepositUncheckedCreateWithoutUserInput[]
     connectOrCreate?: DepositCreateOrConnectWithoutUserInput | DepositCreateOrConnectWithoutUserInput[]
@@ -13635,18 +13663,29 @@ export namespace Prisma {
     deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutContactsInput = {
-    create?: XOR<UserCreateWithoutContactsInput, UserUncheckedCreateWithoutContactsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutContactsInput
-    connect?: UserWhereUniqueInput
+  export type UserContactCreatetagsInput = {
+    set: string[]
   }
 
-  export type UserUpdateOneRequiredWithoutContactsNestedInput = {
-    create?: XOR<UserCreateWithoutContactsInput, UserUncheckedCreateWithoutContactsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutContactsInput
-    upsert?: UserUpsertWithoutContactsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutContactsInput, UserUpdateWithoutContactsInput>, UserUncheckedUpdateWithoutContactsInput>
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
+  }
+
+  export type UserContactUpdatetagsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type DepositCreateNestedManyWithoutAgentInput = {
@@ -13675,14 +13714,6 @@ export namespace Prisma {
     connectOrCreate?: TradeCreateOrConnectWithoutAgentInput | TradeCreateOrConnectWithoutAgentInput[]
     createMany?: TradeCreateManyAgentInputEnvelope
     connect?: TradeWhereUniqueInput | TradeWhereUniqueInput[]
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
   }
 
   export type DepositUpdateManyWithoutAgentNestedInput = {
@@ -13795,10 +13826,6 @@ export namespace Prisma {
     update?: XOR<XOR<AgentUpdateToOneWithWhereWithoutTradesInput, AgentUpdateWithoutTradesInput>, AgentUncheckedUpdateWithoutTradesInput>
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -13882,6 +13909,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -13891,6 +13923,17 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13921,6 +13964,14 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -13933,6 +13984,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedDecimalFilter<$PrismaModel = never> = {
@@ -13998,52 +14063,6 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type UserContactCreateWithoutUserInput = {
-    name: string
-    address: string
-  }
-
-  export type UserContactUncheckedCreateWithoutUserInput = {
-    id?: number
-    name: string
-    address: string
-  }
-
-  export type UserContactCreateOrConnectWithoutUserInput = {
-    where: UserContactWhereUniqueInput
-    create: XOR<UserContactCreateWithoutUserInput, UserContactUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserContactCreateManyUserInputEnvelope = {
-    data: UserContactCreateManyUserInput | UserContactCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type DepositCreateWithoutUserInput = {
     id?: string
     amount: Decimal | DecimalJsLike | number | string
@@ -14074,32 +14093,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserContactUpsertWithWhereUniqueWithoutUserInput = {
-    where: UserContactWhereUniqueInput
-    update: XOR<UserContactUpdateWithoutUserInput, UserContactUncheckedUpdateWithoutUserInput>
-    create: XOR<UserContactCreateWithoutUserInput, UserContactUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserContactUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserContactWhereUniqueInput
-    data: XOR<UserContactUpdateWithoutUserInput, UserContactUncheckedUpdateWithoutUserInput>
-  }
-
-  export type UserContactUpdateManyWithWhereWithoutUserInput = {
-    where: UserContactScalarWhereInput
-    data: XOR<UserContactUpdateManyMutationInput, UserContactUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type UserContactScalarWhereInput = {
-    AND?: UserContactScalarWhereInput | UserContactScalarWhereInput[]
-    OR?: UserContactScalarWhereInput[]
-    NOT?: UserContactScalarWhereInput | UserContactScalarWhereInput[]
-    id?: IntFilter<"UserContact"> | number
-    userId?: IntFilter<"UserContact"> | number
-    name?: StringFilter<"UserContact"> | string
-    address?: StringFilter<"UserContact"> | string
-  }
-
   export type DepositUpsertWithWhereUniqueWithoutUserInput = {
     where: DepositWhereUniqueInput
     update: XOR<DepositUpdateWithoutUserInput, DepositUncheckedUpdateWithoutUserInput>
@@ -14128,44 +14121,6 @@ export namespace Prisma {
     expectedProfit?: DecimalFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
     deadline?: DateTimeFilter<"Deposit"> | Date | string
     createdAt?: DateTimeFilter<"Deposit"> | Date | string
-  }
-
-  export type UserCreateWithoutContactsInput = {
-    walletAddress: string
-    deposits?: DepositCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutContactsInput = {
-    id?: number
-    walletAddress: string
-    deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutContactsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutContactsInput, UserUncheckedCreateWithoutContactsInput>
-  }
-
-  export type UserUpsertWithoutContactsInput = {
-    update: XOR<UserUpdateWithoutContactsInput, UserUncheckedUpdateWithoutContactsInput>
-    create: XOR<UserCreateWithoutContactsInput, UserUncheckedCreateWithoutContactsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutContactsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutContactsInput, UserUncheckedUpdateWithoutContactsInput>
-  }
-
-  export type UserUpdateWithoutContactsInput = {
-    walletAddress?: StringFieldUpdateOperationsInput | string
-    deposits?: DepositUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutContactsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    walletAddress?: StringFieldUpdateOperationsInput | string
-    deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DepositCreateWithoutAgentInput = {
@@ -14273,13 +14228,11 @@ export namespace Prisma {
 
   export type UserCreateWithoutDepositsInput = {
     walletAddress: string
-    contacts?: UserContactCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDepositsInput = {
     id?: number
     walletAddress: string
-    contacts?: UserContactUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDepositsInput = {
@@ -14321,13 +14274,11 @@ export namespace Prisma {
 
   export type UserUpdateWithoutDepositsInput = {
     walletAddress?: StringFieldUpdateOperationsInput | string
-    contacts?: UserContactUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDepositsInput = {
     id?: IntFieldUpdateOperationsInput | number
     walletAddress?: StringFieldUpdateOperationsInput | string
-    contacts?: UserContactUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AgentUpsertWithoutDepositsInput = {
@@ -14405,12 +14356,6 @@ export namespace Prisma {
     deposits?: DepositUncheckedUpdateManyWithoutAgentNestedInput
   }
 
-  export type UserContactCreateManyUserInput = {
-    id?: number
-    name: string
-    address: string
-  }
-
   export type DepositCreateManyUserInput = {
     id?: string
     agentWallet: string
@@ -14419,23 +14364,6 @@ export namespace Prisma {
     expectedProfit: Decimal | DecimalJsLike | number | string
     deadline: Date | string
     createdAt?: Date | string
-  }
-
-  export type UserContactUpdateWithoutUserInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserContactUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserContactUncheckedUpdateManyWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
   }
 
   export type DepositUpdateWithoutUserInput = {

@@ -132,9 +132,15 @@ exports.Prisma.UserScalarFieldEnum = {
 
 exports.Prisma.UserContactScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  name: 'name',
-  address: 'address'
+  userWallet: 'userWallet',
+  contactWallet: 'contactWallet',
+  contactName: 'contactName',
+  contactType: 'contactType',
+  isActive: 'isActive',
+  tags: 'tags',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  lastInteraction: 'lastInteraction'
 };
 
 exports.Prisma.TokenScalarFieldEnum = {
