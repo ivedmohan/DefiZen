@@ -59,26 +59,21 @@ export class AutonomousManager {
         actions.push(`ℹ️  Volatility check: Market stable, no swaps needed`);
       }
       
-      // Step 1: Check deposits
+      // Step 1: Check existing deposits (for reference only)
       const deposits = await this.getActiveDeposits(agentWallet);
-      actions.push(`Found ${deposits.length} active deposits`);
+      actions.push(`Found ${deposits.length} existing active deposits`);
+
+      // Step 2: Calculate total managed amount (if any)
+      const totalAmount = deposits.length > 0 
+        ? deposits.reduce((sum, d) => sum + parseFloat(d.amount), 0) 
+        : 0;
       
-      if (deposits.length === 0) {
-        // Even with no deposits, we still did volatility management
-        return {
-          success: volatilityCheck?.success || false,
-          actions,
-          summary: volatilityCheck?.success 
-            ? "Volatility management executed. No user deposits to process."
-            : "No active deposits found for autonomous trading"
-        };
+      if (totalAmount > 0) {
+        actions.push(`Total currently managed: $${totalAmount.toFixed(2)}`);
       }
 
-      // Step 2: Calculate total managed amount
-      const totalAmount = deposits.reduce((sum, d) => sum + parseFloat(d.amount), 0);
-      actions.push(`Total managed amount: $${totalAmount.toFixed(2)}`);
-
       // Step 3: Execute REAL strategy using MaximisingStrategy
+      // This should run regardless of existing deposits!
       actions.push("📊 Analyzing yield opportunities across protocols...");
       
       // Import and execute the real profit maximization strategy
