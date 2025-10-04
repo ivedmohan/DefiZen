@@ -78,7 +78,10 @@ export class AutonomousManager {
       
       // Import and execute the real profit maximization strategy
       const { maximiseProfit } = await import('./MaximisingStrategy');
+      console.log(`🔍 Running maximiseProfit for wallet: ${agentWallet}`);
       const strategyResult = await maximiseProfit(agentWallet);
+      
+      console.log(`📊 Strategy result:`, JSON.stringify(strategyResult, null, 2));
       
       if (strategyResult.executed) {
         actions.push(`✅ Strategy executed successfully`);

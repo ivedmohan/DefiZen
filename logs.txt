@@ -1,0 +1,308 @@
+2025-10-03T13:42:12.000000000Z [inf]  Starting Container
+2025-10-03T13:42:13.764702508Z [inf]  
+2025-10-03T13:42:13.764708743Z [inf]  > hackergames_backend@1.0.0 start /app
+2025-10-03T13:42:13.764714250Z [inf]  > node dist/index.js
+2025-10-03T13:42:13.764726327Z [inf]  
+2025-10-03T13:42:13.883119893Z [inf]  [server]: Server is running at http://localhost:8080
+2025-10-03T13:42:15.623869576Z [inf]  ✅ Database connected successfully
+2025-10-03T13:42:15.623877686Z [inf]  ✅ Database connected successfully
+2025-10-03T18:30:06.508265595Z [inf]  🔄 Running rebalancer job...
+2025-10-03T18:30:06.508272501Z [inf]  🔄 Running volatile asset swapping job...
+2025-10-03T18:30:06.508278506Z [inf]  🤖 Running autonomous trading job (every 6 hours)...
+2025-10-03T18:30:06.508283237Z [inf]  ✅ Rebalancer job completed.
+2025-10-03T18:30:06.508288110Z [inf]  Found 1 agent wallet(s) to process
+2025-10-03T18:30:06.508292625Z [inf]  
+2025-10-03T18:30:06.508298017Z [inf]  🎯 Processing agent: 0x013B8eEAEd90D4E6F902ddE1BF1770cd75508D00594bBAE2bdd6f1554B0dCF61
+2025-10-03T18:30:06.508302591Z [inf]  🤖 Executing autonomous strategy for 0x013B8eEAEd90D4E6F902ddE1BF1770cd75508D00594bBAE2bdd6f1554B0dCF61
+2025-10-03T18:30:06.508306668Z [inf]  2025-10-03 18:30:02:302 [33mwarn[39m: [33mDatabase has no tokens, using fallback list of common StarkNet tokens[39m
+2025-10-03T18:30:06.508311353Z [inf]  2025-10-03 18:30:02:302 [33mwarn[39m: [33mDatabase has no tokens, using fallback list of common StarkNet tokens[39m
+2025-10-03T18:30:06.508850579Z [inf]  📊 Fetching active autonomous deposits for 0x013B8eEAEd90D4E6F902ddE1BF1770cd75508D00594bBAE2bdd6f1554B0dCF61
+2025-10-03T18:30:06.508856053Z [inf]  ✅ Volatile Balancer Cron job completed.
+2025-10-03T18:30:06.508861438Z [inf]  2025-10-03 18:30:04:304 [33mwarn[39m: [33mDatabase has no tokens, using fallback list of common StarkNet tokens[39m
+2025-10-03T18:30:06.508866455Z [inf]  The supported tokens are: [
+2025-10-03T18:30:06.508870773Z [inf]    {
+2025-10-03T18:30:06.508875590Z [inf]      name: 'USDC',
+2025-10-03T18:30:06.508880303Z [inf]      decimals: 6,
+2025-10-03T18:30:06.508884818Z [inf]      token_address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
+2025-10-03T18:30:06.508890083Z [inf]      image: '/images/tokens/usdc.svg',
+2025-10-03T18:30:06.508895266Z [inf]      type: 'ERC20',
+2025-10-03T18:30:06.508900920Z [inf]      chain_id: 1
+2025-10-03T18:30:06.508906354Z [inf]    },
+2025-10-03T18:30:06.508911865Z [inf]    {
+2025-10-03T18:30:06.508918909Z [inf]      name: 'USDT',
+2025-10-03T18:30:06.508923185Z [inf]      decimals: 6,
+2025-10-03T18:30:06.508928414Z [inf]      token_address: '0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8',
+2025-10-03T18:30:06.508933908Z [inf]      image: '/images/tokens/usdt.svg',
+2025-10-03T18:30:06.508951737Z [inf]      type: 'ERC20',
+2025-10-03T18:30:06.508964037Z [inf]      chain_id: 1
+2025-10-03T18:30:06.508972300Z [inf]    },
+2025-10-03T18:30:06.508978039Z [inf]    {
+2025-10-03T18:30:06.508982247Z [inf]      name: 'ETH',
+2025-10-03T18:30:06.508986718Z [inf]      decimals: 18,
+2025-10-03T18:30:06.508991462Z [inf]      token_address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+2025-10-03T18:30:06.508997846Z [inf]      image: '/images/tokens/eth.svg',
+2025-10-03T18:30:06.509006178Z [inf]      type: 'ERC20',
+2025-10-03T18:30:06.509012469Z [inf]      chain_id: 1
+2025-10-03T18:30:06.509018096Z [inf]    },
+2025-10-03T18:30:06.509023167Z [inf]    {
+2025-10-03T18:30:06.509028863Z [inf]      name: 'STRK',
+2025-10-03T18:30:06.509034956Z [inf]      decimals: 18,
+2025-10-03T18:30:06.509042273Z [inf]      token_address: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
+2025-10-03T18:30:06.509048688Z [inf]      image: '/images/tokens/strk.svg',
+2025-10-03T18:30:06.509054855Z [inf]      type: 'ERC20',
+2025-10-03T18:30:06.509062009Z [inf]      chain_id: 1
+2025-10-03T18:30:06.509066817Z [inf]    },
+2025-10-03T18:30:06.509071518Z [inf]    {
+2025-10-03T18:30:06.509076033Z [inf]      name: 'DAI',
+2025-10-03T18:30:06.509080331Z [inf]      decimals: 18,
+2025-10-03T18:30:06.509086155Z [inf]      token_address: '0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3',
+2025-10-03T18:30:06.509092613Z [inf]      image: '/images/tokens/dai.svg',
+2025-10-03T18:30:06.509097482Z [inf]      type: 'ERC20',
+2025-10-03T18:30:06.509102373Z [inf]      chain_id: 1
+2025-10-03T18:30:06.509107435Z [inf]    }
+2025-10-03T18:30:06.509112842Z [inf]  ]
+2025-10-03T18:30:06.509117799Z [inf]  THe tokens to check are [
+2025-10-03T18:30:06.509122117Z [inf]    {
+2025-10-03T18:30:06.509127363Z [inf]      address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
+2025-10-03T18:30:06.509132108Z [inf]      name: 'USDC',
+2025-10-03T18:30:06.509136473Z [inf]      decimals: 6,
+2025-10-03T18:30:06.509140653Z [inf]      type: 'ERC20',
+2025-10-03T18:30:06.509145521Z [inf]      image: '/images/tokens/usdc.svg'
+2025-10-03T18:30:06.509150444Z [inf]    },
+2025-10-03T18:30:06.509155354Z [inf]    {
+2025-10-03T18:30:06.509159703Z [inf]      address: '0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8',
+2025-10-03T18:30:06.509163968Z [inf]      name: 'USDT',
+2025-10-03T18:30:06.509169154Z [inf]      decimals: 6,
+2025-10-03T18:30:06.509173289Z [inf]      type: 'ERC20',
+2025-10-03T18:30:06.509178078Z [inf]      image: '/images/tokens/usdt.svg'
+2025-10-03T18:30:06.509185095Z [inf]    },
+2025-10-03T18:30:06.509190587Z [inf]    {
+2025-10-03T18:30:06.509196044Z [inf]      address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+2025-10-03T18:30:06.509200719Z [inf]      name: 'ETH',
+2025-10-03T18:30:06.509205256Z [inf]      decimals: 18,
+2025-10-03T18:30:06.509209757Z [inf]      type: 'ERC20',
+2025-10-03T18:30:06.509214894Z [inf]      image: '/images/tokens/eth.svg'
+2025-10-03T18:30:06.509219826Z [inf]    },
+2025-10-03T18:30:06.509224305Z [inf]    {
+2025-10-03T18:30:06.509228664Z [inf]      address: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
+2025-10-03T18:30:06.509233313Z [inf]      name: 'STRK',
+2025-10-03T18:30:06.509238136Z [inf]      decimals: 18,
+2025-10-03T18:30:06.509246529Z [inf]      type: 'ERC20',
+2025-10-03T18:30:06.509252566Z [inf]      image: '/images/tokens/strk.svg'
+2025-10-03T18:30:06.509257252Z [inf]    },
+2025-10-03T18:30:06.509262158Z [inf]    {
+2025-10-03T18:30:06.509266441Z [inf]      address: '0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3',
+2025-10-03T18:30:06.509271397Z [inf]      name: 'DAI',
+2025-10-03T18:30:06.509280326Z [inf]      decimals: 18,
+2025-10-03T18:30:06.509284428Z [inf]      type: 'ERC20',
+2025-10-03T18:30:06.509289504Z [inf]      image: '/images/tokens/dai.svg'
+2025-10-03T18:30:06.509293889Z [inf]    }
+2025-10-03T18:30:06.509298828Z [inf]  ]
+2025-10-03T18:30:08.587353687Z [inf]  [
+2025-10-03T18:30:08.587364064Z [inf]    {
+2025-10-03T18:30:08.587372162Z [inf]      address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
+2025-10-03T18:30:08.587378522Z [inf]      name: 'USDC',
+2025-10-03T18:30:08.587385567Z [inf]      balance: '0',
+2025-10-03T18:30:08.587393050Z [inf]      decimals: '6',
+2025-10-03T18:30:08.587400568Z [inf]      valueUsd: '0',
+2025-10-03T18:30:08.587405909Z [inf]      image: '/images/tokens/usdc.svg',
+2025-10-03T18:30:08.587410973Z [inf]      type: 'ERC20',
+2025-10-03T18:30:08.587417040Z [inf]      priceUsd: '1.0036260950515226'
+2025-10-03T18:30:08.587423956Z [inf]    },
+2025-10-03T18:30:08.587430751Z [inf]    {
+2025-10-03T18:30:08.587436748Z [inf]      address: '0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8',
+2025-10-03T18:30:08.587443811Z [inf]      name: 'USDT',
+2025-10-03T18:30:08.587451168Z [inf]      balance: '0',
+2025-10-03T18:30:08.587456530Z [inf]      decimals: '6',
+2025-10-03T18:30:08.587463463Z [inf]      valueUsd: '0',
+2025-10-03T18:30:08.587468406Z [inf]      image: '/images/tokens/usdt.svg',
+2025-10-03T18:30:08.587473219Z [inf]      type: 'ERC20',
+2025-10-03T18:30:08.587478473Z [inf]      priceUsd: '1.0100833748323685'
+2025-10-03T18:30:08.587484397Z [inf]    },
+2025-10-03T18:30:08.587490894Z [inf]    {
+2025-10-03T18:30:08.587497498Z [inf]      name: 'ETH',
+2025-10-03T18:30:08.587502670Z [inf]      balance: '0.000102337402116632',
+2025-10-03T18:30:08.587508175Z [inf]      valueUsd: '0.46',
+2025-10-03T18:30:08.587513587Z [inf]      decimals: 18,
+2025-10-03T18:30:08.587519056Z [inf]      address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+2025-10-03T18:30:08.587526166Z [inf]      image: '/images/tokens/eth.svg',
+2025-10-03T18:30:08.587536072Z [inf]      type: 'ERC20',
+2025-10-03T18:30:08.587542970Z [inf]      priceUsd: '4504.3'
+2025-10-03T18:30:08.587549876Z [inf]    },
+2025-10-03T18:30:08.587555972Z [inf]    {
+2025-10-03T18:30:08.587562656Z [inf]      name: 'STRK',
+2025-10-03T18:30:08.587568725Z [inf]      balance: '25.97345343991957',
+2025-10-03T18:30:08.587575039Z [inf]      valueUsd: '3.92',
+2025-10-03T18:30:08.587581061Z [inf]      decimals: 18,
+2025-10-03T18:30:08.587586997Z [inf]      address: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
+2025-10-03T18:30:08.587594305Z [inf]      image: '/images/tokens/strk.svg',
+2025-10-03T18:30:08.587602753Z [inf]      type: 'ERC20',
+2025-10-03T18:30:08.587609999Z [inf]      priceUsd: '0.15106284843498466'
+2025-10-03T18:30:08.587617378Z [inf]    },
+2025-10-03T18:30:08.587624674Z [inf]    {
+2025-10-03T18:30:08.587632789Z [inf]      name: 'DAI',
+2025-10-03T18:30:08.587639820Z [inf]      balance: '0',
+2025-10-03T18:30:08.587646466Z [inf]      valueUsd: '0.00',
+2025-10-03T18:30:08.587652708Z [inf]      decimals: 18,
+2025-10-03T18:30:08.587659385Z [inf]      address: '0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3',
+2025-10-03T18:30:08.587666016Z [inf]      image: '/images/tokens/dai.svg',
+2025-10-03T18:30:08.587673282Z [inf]      type: 'ERC20',
+2025-10-03T18:30:08.587680293Z [inf]      priceUsd: '1.302309319753386'
+2025-10-03T18:30:08.587687228Z [inf]    }
+2025-10-03T18:30:08.587694434Z [inf]  ]
+2025-10-03T18:30:09.135055485Z [inf]  ✅ Autonomous strategy executed for $5.00 across 1 deposits. Est. profit: $0.36
+2025-10-03T18:30:09.135063445Z [inf]  
+2025-10-03T18:30:09.135081865Z [inf]  ✅ Autonomous trading job completed.
+2025-10-03T20:30:15.826646855Z [inf]  prisma:error Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 104, kind: ConnectionReset, message: "Connection reset by peer" }) }
+2025-10-03T20:30:15.826656827Z [inf]  prisma:error Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 104, kind: ConnectionReset, message: "Connection reset by peer" }) }
+2025-10-03T20:30:15.826662946Z [inf]  prisma:error Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 104, kind: ConnectionReset, message: "Connection reset by peer" }) }
+2025-10-04T00:30:08.993782221Z [inf]  🔄 Running rebalancer job...
+2025-10-04T00:30:08.993790377Z [inf]  🔄 Running volatile asset swapping job...
+2025-10-04T00:30:08.993797603Z [inf]  🤖 Running autonomous trading job (every 6 hours)...
+2025-10-04T00:30:08.993804939Z [inf]  ✅ Rebalancer job completed.
+2025-10-04T00:30:08.993812851Z [inf]  Found 1 agent wallet(s) to process
+2025-10-04T00:30:08.994190009Z [inf]  
+2025-10-04T00:30:08.994204190Z [inf]  🎯 Processing agent: 0x013B8eEAEd90D4E6F902ddE1BF1770cd75508D00594bBAE2bdd6f1554B0dCF61
+2025-10-04T00:30:08.994213785Z [inf]  🤖 Executing autonomous strategy for 0x013B8eEAEd90D4E6F902ddE1BF1770cd75508D00594bBAE2bdd6f1554B0dCF61
+2025-10-04T00:30:08.994222785Z [inf]  2025-10-04 00:30:02:302 [33mwarn[39m: [33mDatabase has no tokens, using fallback list of common StarkNet tokens[39m
+2025-10-04T00:30:08.994271727Z [inf]  2025-10-04 00:30:02:302 [33mwarn[39m: [33mDatabase has no tokens, using fallback list of common StarkNet tokens[39m
+2025-10-04T00:30:08.994281317Z [inf]  ✅ Volatile Balancer Cron job completed.
+2025-10-04T00:30:08.994291068Z [inf]  📊 Fetching active autonomous deposits for 0x013B8eEAEd90D4E6F902ddE1BF1770cd75508D00594bBAE2bdd6f1554B0dCF61
+2025-10-04T00:30:08.994303677Z [inf]  2025-10-04 00:30:04:304 [33mwarn[39m: [33mDatabase has no tokens, using fallback list of common StarkNet tokens[39m
+2025-10-04T00:30:08.994312599Z [inf]  The supported tokens are: [
+2025-10-04T00:30:08.994320924Z [inf]    {
+2025-10-04T00:30:08.994437929Z [inf]      name: 'USDC',
+2025-10-04T00:30:08.994443962Z [inf]      decimals: 6,
+2025-10-04T00:30:08.994452699Z [inf]      token_address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
+2025-10-04T00:30:08.994461783Z [inf]      image: '/images/tokens/usdc.svg',
+2025-10-04T00:30:08.994605557Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.994613844Z [inf]      chain_id: 1
+2025-10-04T00:30:08.994620051Z [inf]    },
+2025-10-04T00:30:08.994627159Z [inf]    {
+2025-10-04T00:30:08.994642789Z [inf]      name: 'USDT',
+2025-10-04T00:30:08.994648422Z [inf]      decimals: 6,
+2025-10-04T00:30:08.994657164Z [inf]      token_address: '0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8',
+2025-10-04T00:30:08.994662952Z [inf]      image: '/images/tokens/usdt.svg',
+2025-10-04T00:30:08.994670175Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.994678676Z [inf]      chain_id: 1
+2025-10-04T00:30:08.994685250Z [inf]    },
+2025-10-04T00:30:08.994693745Z [inf]    {
+2025-10-04T00:30:08.994700990Z [inf]      name: 'ETH',
+2025-10-04T00:30:08.994708851Z [inf]      decimals: 18,
+2025-10-04T00:30:08.994716207Z [inf]      token_address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+2025-10-04T00:30:08.994726962Z [inf]      image: '/images/tokens/eth.svg',
+2025-10-04T00:30:08.994734191Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.994740911Z [inf]      chain_id: 1
+2025-10-04T00:30:08.994747034Z [inf]    },
+2025-10-04T00:30:08.994752843Z [inf]    {
+2025-10-04T00:30:08.994758172Z [inf]      name: 'STRK',
+2025-10-04T00:30:08.994766154Z [inf]      decimals: 18,
+2025-10-04T00:30:08.994766646Z [inf]      balance: '0',
+2025-10-04T00:30:08.994772389Z [inf]      token_address: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
+2025-10-04T00:30:08.994778567Z [inf]      decimals: '6',
+2025-10-04T00:30:08.994779474Z [inf]      image: '/images/tokens/strk.svg',
+2025-10-04T00:30:08.994787699Z [inf]      valueUsd: '0',
+2025-10-04T00:30:08.994787961Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.994796315Z [inf]      image: '/images/tokens/usdt.svg',
+2025-10-04T00:30:08.994798459Z [inf]      chain_id: 1
+2025-10-04T00:30:08.994804987Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.994805866Z [inf]    },
+2025-10-04T00:30:08.994811765Z [inf]    {
+2025-10-04T00:30:08.994814238Z [inf]      priceUsd: '0.99859747735172'
+2025-10-04T00:30:08.994817314Z [inf]      name: 'DAI',
+2025-10-04T00:30:08.994822233Z [inf]      decimals: 18,
+2025-10-04T00:30:08.994826856Z [inf]    },
+2025-10-04T00:30:08.994829233Z [inf]      token_address: '0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3',
+2025-10-04T00:30:08.994835293Z [inf]    {
+2025-10-04T00:30:08.994835473Z [inf]      image: '/images/tokens/dai.svg',
+2025-10-04T00:30:08.994842251Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.994843543Z [inf]      name: 'ETH',
+2025-10-04T00:30:08.994848000Z [inf]      chain_id: 1
+2025-10-04T00:30:08.994852447Z [inf]      balance: '0.000102337402116632',
+2025-10-04T00:30:08.994855943Z [inf]    }
+2025-10-04T00:30:08.994862514Z [inf]  ]
+2025-10-04T00:30:08.994864689Z [inf]      valueUsd: '0.46',
+2025-10-04T00:30:08.994868801Z [inf]  THe tokens to check are [
+2025-10-04T00:30:08.994873828Z [inf]      decimals: 18,
+2025-10-04T00:30:08.994877444Z [inf]    {
+2025-10-04T00:30:08.994881954Z [inf]      address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+2025-10-04T00:30:08.994883739Z [inf]      address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
+2025-10-04T00:30:08.994891230Z [inf]      image: '/images/tokens/eth.svg',
+2025-10-04T00:30:08.994891394Z [inf]      name: 'USDC',
+2025-10-04T00:30:08.994899552Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.994901998Z [inf]      decimals: 6,
+2025-10-04T00:30:08.994908517Z [inf]      priceUsd: '4504.93'
+2025-10-04T00:30:08.994911054Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.994916699Z [inf]    },
+2025-10-04T00:30:08.994917774Z [inf]      image: '/images/tokens/usdc.svg'
+2025-10-04T00:30:08.994923417Z [inf]    },
+2025-10-04T00:30:08.994926094Z [inf]    {
+2025-10-04T00:30:08.994929116Z [inf]    {
+2025-10-04T00:30:08.994935995Z [inf]      address: '0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8',
+2025-10-04T00:30:08.994936158Z [inf]      name: 'STRK',
+2025-10-04T00:30:08.994942769Z [inf]      name: 'USDT',
+2025-10-04T00:30:08.994944931Z [inf]      balance: '25.97345343991957',
+2025-10-04T00:30:08.994948928Z [inf]      decimals: 6,
+2025-10-04T00:30:08.994954187Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.994955260Z [inf]      valueUsd: '3.94',
+2025-10-04T00:30:08.994959042Z [inf]      image: '/images/tokens/usdt.svg'
+2025-10-04T00:30:08.994963375Z [inf]      decimals: 18,
+2025-10-04T00:30:08.994965552Z [inf]    },
+2025-10-04T00:30:08.994971983Z [inf]      address: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
+2025-10-04T00:30:08.994972055Z [inf]    {
+2025-10-04T00:30:08.994978561Z [inf]      address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+2025-10-04T00:30:08.994980989Z [inf]      image: '/images/tokens/strk.svg',
+2025-10-04T00:30:08.994984770Z [inf]      name: 'ETH',
+2025-10-04T00:30:08.994988777Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.994991523Z [inf]      decimals: 18,
+2025-10-04T00:30:08.994996691Z [inf]      priceUsd: '0.15185883082867338'
+2025-10-04T00:30:08.994998333Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.995005442Z [inf]    },
+2025-10-04T00:30:08.995005525Z [inf]      image: '/images/tokens/eth.svg'
+2025-10-04T00:30:08.995011552Z [inf]    },
+2025-10-04T00:30:08.995016501Z [inf]    {
+2025-10-04T00:30:08.995020988Z [inf]      address: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
+2025-10-04T00:30:08.995025401Z [inf]      name: 'STRK',
+2025-10-04T00:30:08.995031474Z [inf]      decimals: 18,
+2025-10-04T00:30:08.995038064Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.995043220Z [inf]      image: '/images/tokens/strk.svg'
+2025-10-04T00:30:08.995047879Z [inf]    },
+2025-10-04T00:30:08.995052352Z [inf]    {
+2025-10-04T00:30:08.995058272Z [inf]      address: '0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3',
+2025-10-04T00:30:08.995062798Z [inf]      name: 'DAI',
+2025-10-04T00:30:08.995067259Z [inf]      decimals: 18,
+2025-10-04T00:30:08.995071696Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.995076236Z [inf]      image: '/images/tokens/dai.svg'
+2025-10-04T00:30:08.995081410Z [inf]    }
+2025-10-04T00:30:08.995086118Z [inf]  ]
+2025-10-04T00:30:08.995090837Z [inf]  [
+2025-10-04T00:30:08.995095404Z [inf]    {
+2025-10-04T00:30:08.995099906Z [inf]      address: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
+2025-10-04T00:30:08.995104943Z [inf]      name: 'USDC',
+2025-10-04T00:30:08.995110952Z [inf]      balance: '0',
+2025-10-04T00:30:08.995115686Z [inf]      decimals: '6',
+2025-10-04T00:30:08.995121457Z [inf]      valueUsd: '0',
+2025-10-04T00:30:08.995126489Z [inf]      image: '/images/tokens/usdc.svg',
+2025-10-04T00:30:08.995130632Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.995136180Z [inf]      priceUsd: '0.9948978600551679'
+2025-10-04T00:30:08.995141149Z [inf]    },
+2025-10-04T00:30:08.995148042Z [inf]    {
+2025-10-04T00:30:08.995152159Z [inf]      address: '0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8',
+2025-10-04T00:30:08.995156409Z [inf]      name: 'USDT',
+2025-10-04T00:30:08.995819493Z [inf]    {
+2025-10-04T00:30:08.995844684Z [inf]      name: 'DAI',
+2025-10-04T00:30:08.995850013Z [inf]      balance: '0',
+2025-10-04T00:30:08.995854795Z [inf]      valueUsd: '0.00',
+2025-10-04T00:30:08.995859617Z [inf]      decimals: 18,
+2025-10-04T00:30:08.995865644Z [inf]      address: '0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3',
+2025-10-04T00:30:08.995870824Z [inf]      image: '/images/tokens/dai.svg',
+2025-10-04T00:30:08.995876272Z [inf]      type: 'ERC20',
+2025-10-04T00:30:08.995880593Z [inf]      priceUsd: '1.2965802163710098'
+2025-10-04T00:30:08.995884867Z [inf]    }
+2025-10-04T00:30:08.995889010Z [inf]  ]
+2025-10-04T00:30:08.995893457Z [inf]  ✅ Autonomous strategy executed for $5.00 across 1 deposits. Est. profit: $0.37
+2025-10-04T00:30:08.995898149Z [inf]  
+2025-10-04T00:30:08.995902953Z [inf]  ✅ Autonomous trading job completed.
+2025-10-04T02:30:45.535587123Z [inf]  prisma:error Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 104, kind: ConnectionReset, message: "Connection reset by peer" }) }
+2025-10-04T02:30:45.535599066Z [inf]  prisma:error Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 104, kind: ConnectionReset, message: "Connection reset by peer" }) }
+2025-10-04T02:30:45.535611566Z [inf]  prisma:error Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 104, kind: ConnectionReset, message: "Connection reset by peer" }) }
